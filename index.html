@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HawariTech — Edge AI, Computer Vision &amp; Distributed Systems Engineering</title>
+<meta name="description" content="HawariTech is an independent consultancy led by Basil Hawari, a principal software & AI engineer. We design, optimize, and deploy real-time perception models and scalable cloud architectures — from NVIDIA Jetson and STM32N6 silicon to production backends.">
+<meta name="theme-color" content="#070b10">
+<script>document.documentElement.classList.add("js");</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="HawariTech — Edge AI, Computer Vision &amp; Distributed Systems Engineering">
+<meta property="og:description" content="Independent consultancy led by Basil Hawari. Real-time perception on constrained silicon, low-latency media pipelines, and production cloud backends — engineered and delivered directly by the principal.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1017'/%3E%3Ctext x='32' y='44' font-family='monospace' font-size='34' fill='%2355d6be' text-anchor='middle' font-weight='700'%3Eh.%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     HawariTech — single-page consultancy site (English master)
+     Static, no build step, no runtime dependencies beyond fonts.
+     To swap the booking link / email / phone, search for "mailto:"
+     and the visible contact addresses in this file.
+     ============================================================ */
+  :root {
+    --bg:          #070b10;
+    --surface:     #0c131c;
+    --card:        #0e1622;
+    --card-raise:  #111b29;
+    --line:        rgba(130, 165, 205, 0.13);
+    --line-strong: rgba(130, 165, 205, 0.26);
+    --ink:         #e9f0f8;
+    --ink-dim:     #a3b4c8;
+    --ink-faint:   #5c7186;
+    --accent:      #55d6be;
+    --accent-hi:   #7be6d2;
+    --accent-ink:  #04141a;
+    --ok:          #7ee2a8;
+    --warn:        #e8c268;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+    --maxw: 1160px;
+    --r: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      linear-gradient(rgba(130,165,205,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(130,165,205,0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .mono { font-family: var(--mono); }
+
+  .skip-link {
+    position: absolute; left: -999px; top: 0; z-index: 300;
+    background: var(--accent); color: var(--accent-ink);
+    padding: 0.7rem 1.2rem; border-radius: 0 0 8px 0;
+    font-family: var(--mono); font-size: 0.85rem; font-weight: 600;
+  }
+  .skip-link:focus { left: 0; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: 1.5rem; }
+  section[id] { scroll-margin-top: 84px; }
+
+  /* ---------- typography ---------- */
+  h1, h2, h3 { line-height: 1.12; letter-spacing: -0.025em; font-weight: 650; }
+  .k {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex; align-items: center; gap: 0.6rem;
+  }
+  .k::before { content: "//"; color: var(--ink-faint); }
+  .eyebrow { display: block; margin-bottom: 1.1rem; }
+
+  h2 { font-size: clamp(1.65rem, 3.2vw, 2.4rem); margin-bottom: 1rem; }
+  .sec-sub { color: var(--ink-dim); max-width: 620px; font-size: 1.02rem; }
+  .accent { color: var(--accent); }
+
+  /* ---------- header ---------- */
+  .site-header {
+    position: sticky; top: 0; z-index: 120;
+    background: rgba(7, 11, 16, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    height: 64px;
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-family: var(--mono); font-weight: 700; font-size: 1.05rem;
+    text-decoration: none; letter-spacing: -0.02em;
+  }
+  .brand .dot { color: var(--accent); }
+  .brand-mark {
+    width: 10px; height: 10px; border-radius: 2px;
+    background: var(--accent); display: inline-block;
+    box-shadow: 0 0 0 3px rgba(85, 214, 190, 0.18);
+  }
+  .nav-links { display: flex; align-items: center; gap: 1.9rem; }
+  .nav-links a {
+    text-decoration: none; color: var(--ink-dim);
+    font-size: 0.92rem; font-weight: 500;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent); color: var(--accent-ink);
+    font-family: var(--mono); font-size: 0.8rem; font-weight: 600;
+    text-decoration: none; padding: 0.5rem 0.95rem; border-radius: 8px;
+    border: 1px solid transparent; transition: background 0.15s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--accent-hi); transform: translateY(-1px); }
+  .nav-menu { display: none; }
+  .nav-menu summary {
+    cursor: pointer; list-style: none;
+    font-family: var(--mono); font-size: 0.8rem; font-weight: 600;
+    color: var(--ink-dim); border: 1px solid var(--line-strong);
+    padding: 0.45rem 0.8rem; border-radius: 8px; user-select: none;
+  }
+  .nav-menu summary::-webkit-details-marker { display: none; }
+  .nav-menu[open] .menu-panel {
+    position: absolute; right: 1rem; top: 58px;
+    background: var(--card-raise); border: 1px solid var(--line-strong);
+    border-radius: 12px; padding: 0.6rem; min-width: 220px;
+    display: flex; flex-direction: column; box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+  }
+  .nav-menu .menu-panel a {
+    color: var(--ink-dim); text-decoration: none; padding: 0.55rem 0.7rem;
+    border-radius: 8px; font-size: 0.92rem;
+  }
+  .nav-menu .menu-panel a:hover { background: var(--card); color: var(--ink); }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; padding: 5.5rem 0 3.5rem; }
+  .hero::before {
+    content: ""; position: absolute; top: -420px; right: -220px;
+    width: 760px; height: 760px; pointer-events: none;
+    background: radial-gradient(circle, rgba(85,214,190,0.10) 0%, transparent 65%);
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.08fr 0.92fr;
+    gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero h1 { font-size: clamp(2.25rem, 5.1vw, 3.7rem); margin: 0 0 1.4rem; max-width: 21ch; }
+  .hero .sub {
+    color: var(--ink-dim); font-size: clamp(1.02rem, 1.6vw, 1.14rem);
+    line-height: 1.7; max-width: 56ch; margin-bottom: 2.2rem;
+  }
+  .hero .sub strong { color: var(--ink); font-weight: 600; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; margin-bottom: 1.1rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.98rem; font-weight: 600; text-decoration: none;
+    padding: 0.85rem 1.5rem; border-radius: 10px;
+    border: 1px solid transparent; cursor: pointer;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: var(--accent-hi); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent-hi); }
+  .btn .arr { font-family: var(--mono); }
+  .btn svg { flex: none; }
+  .email-line {
+    font-family: var(--mono); font-size: 0.84rem; color: var(--ink-faint);
+    display: inline-flex; align-items: center; gap: 0.6rem;
+  }
+  .email-line a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px dashed var(--line-strong); }
+  .email-line a:hover { color: var(--accent-hi); border-color: var(--accent); }
+
+  /* scope card in hero */
+  .scope-card {
+    background: linear-gradient(180deg, var(--card) 0%, var(--surface) 100%);
+    border: 1px solid var(--line-strong); border-radius: var(--r);
+    padding: 1.4rem 1.5rem 1.5rem; position: relative;
+  }
+  .scope-card::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+    border-radius: var(--r) var(--r) 0 0;
+    background: linear-gradient(90deg, var(--accent), transparent 70%);
+  }
+  .scope-head {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem; padding-bottom: 0.9rem; margin-bottom: 0.9rem;
+    border-bottom: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 0.76rem; color: var(--ink-faint);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .scope-head .pulse { color: var(--accent); display: inline-flex; align-items: center; gap: 0.45rem; }
+  .scope-head .pulse::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 0 0 rgba(85,214,190,0.5);
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(85,214,190,0.45); }
+    70%  { box-shadow: 0 0 0 8px rgba(85,214,190,0); }
+    100% { box-shadow: 0 0 0 0 rgba(85,214,190,0); }
+  }
+  .scope-row {
+    display: flex; gap: 0.9rem; align-items: baseline;
+    font-family: var(--mono); font-size: 0.86rem;
+    padding: 0.42rem 0; border-bottom: 1px dotted var(--line);
+  }
+  .scope-row:last-of-type { border-bottom: none; }
+  .scope-row .lk { color: var(--ink-faint); min-width: 86px; flex: none; }
+  .scope-row .lv { color: var(--ink); }
+  .scope-row .lv em { color: var(--accent); font-style: normal; }
+  .scope-checks { margin-top: 1rem; }
+  .scope-check {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.92rem; color: var(--ink-dim); padding: 0.28rem 0;
+  }
+  .scope-check .tick { color: var(--ok); font-family: var(--mono); font-size: 0.85rem; }
+  .scope-foot {
+    margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.74rem; color: var(--ink-faint);
+    letter-spacing: 0.06em;
+  }
+
+  /* snapshot strip */
+  .snap {
+    margin-top: 3.6rem; border: 1px solid var(--line); border-radius: var(--r);
+    background: rgba(12, 19, 28, 0.6);
+    display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 0;
+    overflow: hidden;
+  }
+  .snap-item { padding: 1.15rem 1.4rem; border-left: 1px solid var(--line); }
+  .snap-item:first-child { border-left: none; }
+  .snap-item .lb {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.45rem;
+  }
+  .snap-item .va { font-size: 0.9rem; color: var(--ink-dim); line-height: 1.55; }
+  .snap-item .va strong { color: var(--ink); font-weight: 600; }
+
+  /* metrics band */
+  .metrics {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: rgba(10, 15, 22, 0.7);
+  }
+  .metrics-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2rem; padding: 2.2rem 0;
+  }
+  .metric .num {
+    font-family: var(--mono); font-weight: 700; font-size: 2.1rem;
+    color: var(--accent); letter-spacing: -0.02em; line-height: 1.1;
+  }
+  .metric .cap { font-size: 0.84rem; color: var(--ink-faint); margin-top: 0.35rem; max-width: 24ch; }
+
+  /* ---------- generic sections ---------- */
+  .section { padding: clamp(4.2rem, 8vw, 6.5rem) 0; position: relative; }
+  .section.alt { background: rgba(10, 15, 22, 0.6); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .head { margin-bottom: clamp(2.2rem, 4vw, 3.4rem); }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .tag {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+    color: var(--accent); background: rgba(85,214,190,0.07);
+    border: 1px solid rgba(85,214,190,0.24);
+    padding: 0.22rem 0.62rem; border-radius: 999px;
+    letter-spacing: 0.01em;
+  }
+  .tag.plain { color: var(--ink-dim); background: rgba(130,165,205,0.06); border-color: var(--line-strong); }
+  .tag.ok    { color: var(--ok); background: rgba(126,226,168,0.07); border-color: rgba(126,226,168,0.25); }
+
+  .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; align-items: stretch; }
+
+  .p-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+    padding: 1.8rem 1.7rem; display: flex; flex-direction: column; gap: 1.1rem;
+    transition: border-color 0.18s, transform 0.18s;
+    position: relative;
+  }
+  .p-card:hover { border-color: var(--line-strong); transform: translateY(-3px); }
+  .p-num {
+    font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.12em;
+    color: var(--ink-faint);
+  }
+  .p-num b { color: var(--accent); font-weight: 600; }
+  .p-title { font-size: 1.28rem; font-weight: 650; letter-spacing: -0.015em; }
+  .p-tagrow { margin-top: -0.3rem; }
+
+  .box {
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 0.95rem 1.05rem; background: rgba(7, 11, 16, 0.45);
+  }
+  .box .box-k {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.55rem;
+  }
+  .box.prob .box-k { color: var(--warn); }
+  .box p { font-size: 0.92rem; color: var(--ink-dim); }
+
+  .dl { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .dl li {
+    display: flex; gap: 0.7rem; font-size: 0.93rem; color: var(--ink-dim);
+    line-height: 1.5;
+  }
+  .dl li::before { content: "▸"; color: var(--accent); font-family: var(--mono); flex: none; }
+
+  /* ---------- proof (case studies) ---------- */
+  .proof-stack { display: flex; flex-direction: column; gap: 1.4rem; }
+  .proj {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+    padding: 1.9rem 1.9rem 1.6rem; position: relative; overflow: hidden;
+    transition: border-color 0.18s;
+  }
+  .proj:hover { border-color: var(--line-strong); }
+  .proj::before {
+    content: attr(data-id); position: absolute; top: 0.9rem; right: 1.4rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em;
+    color: rgba(130, 165, 205, 0.35);
+  }
+  .proj-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.8rem 1.2rem; margin-bottom: 0.9rem; }
+  .proj-name { font-size: 1.42rem; font-weight: 650; letter-spacing: -0.02em; }
+  .proj-co { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-faint); }
+  .proj-tags { margin-bottom: 1.3rem; }
+  .pab { display: grid; grid-template-columns: 0.85fr 1.25fr; gap: 1.2rem 1.6rem; }
+  .pab-cell { display: flex; flex-direction: column; gap: 0.35rem; }
+  .pab-k {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-faint);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .pab-k .ic { color: var(--accent); }
+  .pab-k.context { color: var(--ink-faint); }
+  .pab p { font-size: 0.93rem; color: var(--ink-dim); line-height: 1.6; }
+  .pab-cell.wide { grid-column: 1 / -1; }
+  .outcome { border: 1px solid rgba(126,226,168,0.22); background: rgba(126,226,168,0.05); border-radius: 10px; }
+  .outcome p { color: var(--ink); }
+  .outcome strong { color: var(--ok); font-weight: 600; }
+  .proj-foot { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .mini-link {
+    font-family: var(--mono); font-size: 0.82rem; text-decoration: none;
+    color: var(--ink-dim); display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: color 0.15s;
+  }
+  .mini-link:hover { color: var(--accent-hi); }
+  .mini-link .arr { transition: transform 0.15s; }
+  .mini-link:hover .arr { transform: translateX(3px); }
+
+  /* ---------- about ---------- */
+  .about-grid { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .lede {
+    font-size: clamp(1.1rem, 2vw, 1.32rem); line-height: 1.65; color: var(--ink);
+    letter-spacing: -0.01em; margin-bottom: 1.4rem;
+  }
+  .lede .accent { color: var(--accent-hi); }
+  .about-body p { color: var(--ink-dim); margin-bottom: 1.15rem; font-size: 1rem; line-height: 1.75; }
+  .about-body strong { color: var(--ink); font-weight: 600; }
+  .guarantee {
+    border-left: 3px solid var(--accent); background: rgba(85,214,190,0.05);
+    padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin-top: 1.6rem;
+  }
+  .guarantee p { color: var(--ink); margin-bottom: 0; font-size: 0.98rem; }
+
+  .cred {
+    background: linear-gradient(180deg, var(--card) 0%, var(--surface) 100%);
+    border: 1px solid var(--line-strong); border-radius: var(--r); padding: 1.5rem 1.6rem;
+  }
+  .cred .scope-head { border-bottom-style: solid; }
+  .cred-row {
+    display: grid; grid-template-columns: 110px 1fr; gap: 0.9rem; align-items: baseline;
+    padding: 0.5rem 0; border-bottom: 1px dotted var(--line); font-size: 0.93rem;
+  }
+  .cred-row:last-of-type { border-bottom: none; }
+  .cred-row .lk { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
+  .cred-row .lv { color: var(--ink-dim); }
+  .cred-row .lv strong { color: var(--ink); font-weight: 600; }
+  .cred .tag-row { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+
+  .orgs { margin-top: 2.4rem; }
+  .orgs-k {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.9rem;
+  }
+  .orgs-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.8rem; }
+  .org {
+    border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 1rem;
+    background: rgba(12, 19, 28, 0.5);
+  }
+  .org .nm { font-size: 0.9rem; font-weight: 600; color: var(--ink-dim); }
+  .org .rl { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-faint); margin-top: 0.2rem; line-height: 1.5; }
+
+  /* ---------- engagement models ---------- */
+  .eng-card { display: flex; flex-direction: column; }
+  .eng-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
+  .chip {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.05em;
+    color: var(--ink-dim); border: 1px solid var(--line-strong);
+    padding: 0.28rem 0.7rem; border-radius: 999px; background: rgba(130,165,205,0.05);
+    white-space: nowrap;
+  }
+  .eng-goal { flex: 1; }
+  .eng-goal .box { background: transparent; border: none; padding: 0; }
+  .eng-goal .box .box-k { color: var(--ink-faint); }
+  .eng-cta { margin-top: 1.3rem; padding-top: 1.1rem; border-top: 1px solid var(--line); }
+
+  /* ---------- contact ---------- */
+  .contact-panel {
+    border: 1px solid var(--line-strong); border-radius: 18px;
+    background:
+      radial-gradient(1200px 500px at 85% -10%, rgba(85,214,190,0.10), transparent 60%),
+      linear-gradient(180deg, var(--card) 0%, var(--surface) 100%);
+    padding: clamp(2.4rem, 5vw, 4rem);
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem);
+    overflow: hidden;
+  }
+  .contact-panel h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 1.1rem; }
+  .contact-panel .intro { color: var(--ink-dim); font-size: 1.03rem; line-height: 1.75; max-width: 52ch; margin-bottom: 2rem; }
+  .methods { list-style: none; display: flex; flex-direction: column; }
+  .methods li { display: flex; flex-direction: column; gap: 0.15rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .methods li:first-child { padding-top: 0; }
+  .methods .m-k { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+  .methods .m-a { font-size: 1.06rem; font-weight: 600; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 0.55rem; width: fit-content; }
+  .methods .m-a:hover { color: var(--accent-hi); }
+  .methods .m-a .arr { font-family: var(--mono); color: var(--accent); font-size: 0.9rem; }
+  .methods .m-note { font-size: 0.84rem; color: var(--ink-faint); }
+
+  .contact-side { display: flex; flex-direction: column; justify-content: space-between; gap: 1.6rem; }
+  .side-k {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.8rem;
+  }
+  .mini-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .mini-bullets li { display: flex; gap: 0.65rem; font-size: 0.94rem; color: var(--ink-dim); }
+  .mini-bullets li::before { content: "✓"; color: var(--ok); font-family: var(--mono); flex: none; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 3rem 0 2.2rem; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2.5rem; }
+  .foot-grid h4 {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.9rem; font-weight: 600;
+  }
+  .foot-grid p { color: var(--ink-faint); font-size: 0.9rem; line-height: 1.7; max-width: 34ch; }
+  .foot-grid a { display: block; color: var(--ink-dim); text-decoration: none; font-size: 0.92rem; padding: 0.18rem 0; width: fit-content; }
+  .foot-grid a:hover { color: var(--accent-hi); }
+  .foot-bottom {
+    margin-top: 2.4rem; padding-top: 1.4rem; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.8rem;
+    font-family: var(--mono); font-size: 0.76rem; color: var(--ink-faint);
+  }
+
+  /* reveal-on-scroll only applies when JS is available (html.js); content is
+     always visible when JS is disabled, so the page never depends on it */
+  .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 980px) {
+    .hero-grid, .about-grid, .contact-panel { grid-template-columns: 1fr; }
+    .cards-3 { grid-template-columns: 1fr; }
+    .pab { grid-template-columns: 1fr; }
+    .pab-cell.wide { grid-column: auto; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
+    .snap { grid-template-columns: 1fr; }
+    .snap-item { border-left: none; border-top: 1px solid var(--line); }
+    .snap-item:first-child { border-top: none; }
+    .orgs-grid { grid-template-columns: repeat(2, 1fr); }
+    .foot-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .nav-links { display: none; }
+    .nav-menu { display: block; position: relative; }
+  }
+  @media (max-width: 560px) {
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    .orgs-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .js .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top"><span class="brand-mark"></span>hawari<span class="dot">.tech</span></a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#practice">Practice</a>
+      <a href="#proof">Proof</a>
+      <a href="#about">About</a>
+      <a href="#engagements">Engagements</a>
+    </nav>
+
+    <a class="nav-cta" href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech">Book a technical call</a>
+
+    <details class="nav-menu">
+      <summary>Menu</summary>
+      <div class="menu-panel">
+        <a href="#practice">Practice areas</a>
+        <a href="#proof">Selected proof</a>
+        <a href="#about">About Basil</a>
+        <a href="#engagements">Engagement models</a>
+        <a href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech">Book a technical call</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= 1 · HERO ================= -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="k eyebrow">independent consultancy &middot; principal-led</span>
+        <h1>Edge AI, Computer Vision, and <span class="accent">Distributed Systems</span> Engineering.</h1>
+        <p class="sub">
+          HawariTech is an independent consultancy led by Basil Hawari. I help engineering teams
+          <strong>design, optimize, and deploy</strong> real-time perception models and scalable cloud
+          architectures — from resource-constrained silicon to production backends.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech">
+            Schedule a Technical Call <span class="arr">↗</span>
+          </a>
+          <a class="btn btn-ghost" href="mailto:basiljhs@gmail.com">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            Email Directly
+          </a>
+        </div>
+        <span class="email-line">→ <a href="mailto:basiljhs@gmail.com">basiljhs@gmail.com</a> &nbsp;·&nbsp; <a href="tel:+972503634193">+972 50-363-4193</a></span>
+      </div>
+
+      <aside class="scope-card" aria-label="Engagement profile">
+        <div class="scope-head">
+          <span>scope_card.001</span>
+          <span class="pulse">active</span>
+        </div>
+        <div class="scope-row"><span class="lk">operator</span><span class="lv">basil_hawari</span></div>
+        <div class="scope-row"><span class="lk">role</span><span class="lv">principal engineer &mdash; direct hire</span></div>
+        <div class="scope-row"><span class="lk">layer</span><span class="lv"><em>silicon → edge → cloud</em></span></div>
+        <div class="scope-row"><span class="lk">stack</span><span class="lv">c++ · python · aws</span></div>
+        <div class="scope-row"><span class="lk">targets</span><span class="lv">jetson · stm32n6 · arm64</span></div>
+        <div class="scope-checks">
+          <div class="scope-check"><span class="tick">✓</span> You work directly with me</div>
+          <div class="scope-check"><span class="tick">✓</span> No account managers</div>
+          <div class="scope-check"><span class="tick">✓</span> No outsourced bench or handoff layers</div>
+        </div>
+        <div class="scope-foot">delivery_model: principal_builds_the_production_code</div>
+      </aside>
+    </div>
+
+    <div class="snap reveal">
+      <div class="snap-item">
+        <div class="lb">focus</div>
+        <div class="va"><strong>Edge AI</strong> · <strong>Computer Vision</strong> · Embedded MCUs/MPUs · <strong>AWS Cloud</strong></div>
+      </div>
+      <div class="snap-item">
+        <div class="lb">target silicon</div>
+        <div class="va">NVIDIA Jetson · STM32N6 · ARM architectures</div>
+      </div>
+      <div class="snap-item">
+        <div class="lb">location</div>
+        <div class="va">Remote worldwide · Based in Haifa, Israel</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- metrics -->
+<div class="metrics" aria-label="Selected track record">
+  <div class="wrap metrics-grid reveal">
+    <div class="metric">
+      <div class="num">15+</div>
+      <div class="cap">years shipping production systems across the full stack</div>
+    </div>
+    <div class="metric">
+      <div class="num">90%+</div>
+      <div class="cap">inference latency reduction on a Jetson safety deployment</div>
+    </div>
+    <div class="metric">
+      <div class="num">20K+</div>
+      <div class="cap">daily users served on platforms architected &amp; scaled</div>
+    </div>
+    <div class="metric">
+      <div class="num">99.9%</div>
+      <div class="cap">uptime on mission-critical infrastructure under management</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 2 · PRACTICE ================= -->
+<section class="section" id="practice">
+  <div class="wrap">
+    <div class="head">
+      <span class="k eyebrow">practice areas</span>
+      <h2>I group work by the technical problem you are trying to solve.</h2>
+      <p class="sec-sub">Not a bare list of technologies — three problem spaces where model accuracy, hardware constraints, and latency budgets collide with real deployments.</p>
+    </div>
+
+    <div class="cards-3">
+      <!-- A -->
+      <article class="p-card reveal">
+        <div class="p-num">P—01</div>
+        <h3 class="p-title">Edge AI &amp; Computer Vision Deployment</h3>
+        <div class="box prob">
+          <div class="box-k">⚠ the problem</div>
+          <p>Models running in Python on high-end GPUs fail under physical deployment constraints — thermal throttling, strict latency budgets, and memory limits.</p>
+        </div>
+        <ul class="dl">
+          <li>Custom inference engines in C++ on TensorRT, ONNX Runtime, and CUDA.</li>
+          <li>Model optimization, quantization, and pruning for real-time edge execution.</li>
+          <li>Fusion of classical vision (OpenCV, homography, multi-view geometry, optical flow) with deep networks for tracking and segmentation.</li>
+          <li>Integration from NVIDIA Jetson to next-gen NPUs like the STM32N6.</li>
+        </ul>
+        <div class="tag-row p-tagrow">
+          <span class="tag">c++</span><span class="tag">tensorrt</span><span class="tag">onnx</span>
+          <span class="tag">cuda</span><span class="tag">opencv</span><span class="tag">quantization</span>
+          <span class="tag">jetson</span><span class="tag">stm32n6</span>
+        </div>
+      </article>
+
+      <!-- B -->
+      <article class="p-card reveal">
+        <div class="p-num">P—02</div>
+        <h3 class="p-title">Real-Time Media &amp; IoT Architecture</h3>
+        <div class="box prob">
+          <div class="box-k">⚠ the problem</div>
+          <p>Edge devices must stream video, communicate status, and receive commands without dropping frames or introducing unacceptable latency.</p>
+        </div>
+        <ul class="dl">
+          <li>Ultra-low-latency video streaming pipelines with WebRTC, GStreamer, and C++.</li>
+          <li>Reliable IoT telemetry, command, and control backends via AWS IoT Core and MQTT.</li>
+          <li>Edge-to-cloud sync for automated synthetic data capture, metrics logging, and model monitoring.</li>
+        </ul>
+        <div class="tag-row p-tagrow">
+          <span class="tag">webrtc</span><span class="tag">gstreamer</span><span class="tag">mqtt</span>
+          <span class="tag">aws-iot-core</span><span class="tag">c++</span>
+        </div>
+      </article>
+
+      <!-- C -->
+      <article class="p-card reveal">
+        <div class="p-num">P—03</div>
+        <h3 class="p-title">Full-System Prototyping &amp; Production Hardening</h3>
+        <div class="box prob">
+          <div class="box-k">⚠ the problem</div>
+          <p>Startups and R&amp;D groups need an end-to-end working system to validate a product concept or unblock a hardware roadmap.</p>
+        </div>
+        <ul class="dl">
+          <li>Rapid software prototyping on pre-release silicon and custom hardware rigs.</li>
+          <li>Computer vision engines integrated into native mobile apps — iOS, Android, wearables.</li>
+          <li>Serverless cloud backends (AWS Lambda, AppSync, DynamoDB) sized for predictable cost and near-zero maintenance.</li>
+        </ul>
+        <div class="tag-row p-tagrow">
+          <span class="tag">aws-lambda</span><span class="tag">appsync</span><span class="tag">dynamodb</span>
+          <span class="tag">flutter</span><span class="tag">ios</span><span class="tag">android</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3 · PROOF ================= -->
+<section class="section alt" id="proof">
+  <div class="wrap">
+    <div class="head">
+      <span class="k eyebrow">selected proof points</span>
+      <h2>Outcomes engineers hire on — not marketing claims.</h2>
+      <p class="sec-sub">Structured problem → action → outcome summaries. Details beyond what is NDA-safe are shared on a technical call.</p>
+    </div>
+
+    <div class="proof-stack">
+      <!-- proof 1 -->
+      <article class="proj reveal" data-id="proof/01">
+        <div class="proj-top">
+          <h3 class="proj-name">Real-Time Edge Safety Vision</h3>
+          <span class="proj-co">Coral Smart Pools — edge-AI R&amp;D lead</span>
+        </div>
+        <div class="tag-row proj-tags">
+          <span class="tag">nvidia jetson</span><span class="tag">c++</span><span class="tag">tensorrt</span>
+          <span class="tag">webrtc</span><span class="tag">quantization</span>
+        </div>
+        <div class="pab">
+          <div class="pab-cell">
+            <span class="pab-k">◈ context</span>
+            <p>Commercial pool safety system requiring continuous, sub-second human detection under fixed thermal budgets.</p>
+          </div>
+          <div class="pab-cell">
+            <span class="pab-k">⚒ implementation</span>
+            <p>Replaced standard inference code with a tailored C++ pipeline on NVIDIA Jetson using TensorRT and custom ResNet optimizations; built low-latency WebRTC feed delivery.</p>
+          </div>
+          <div class="pab-cell wide outcome">
+            <span class="pab-k">✓ outcome</span>
+            <p><strong>Enabled ASTM safety certification</strong> and reduced inference latency by <strong>over 90%</strong> while running within fixed thermal limits.</p>
+          </div>
+        </div>
+        <div class="proj-foot">
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Edge%20Vision%20Case%20Study%20%E2%80%94%20HawariTech">Discuss this project under NDA <span class="arr">→</span></a>
+        </div>
+      </article>
+
+      <!-- proof 2 -->
+      <article class="proj reveal" data-id="proof/02">
+        <div class="proj-top">
+          <h3 class="proj-name">Edge NPU Early-Adopter Prototype</h3>
+          <span class="proj-co">STMicroelectronics STM32N6 — pre-release silicon program</span>
+        </div>
+        <div class="tag-row proj-tags">
+          <span class="tag">stm32n6</span><span class="tag">neural-art npu</span><span class="tag">c/c++</span>
+          <span class="tag">arm</span><span class="tag">quantized models</span>
+        </div>
+        <div class="pab">
+          <div class="pab-cell">
+            <span class="pab-k">◈ context</span>
+            <p>Pre-release silicon integration for next-generation edge hardware, before public tooling and silicon availability.</p>
+          </div>
+          <div class="pab-cell">
+            <span class="pab-k">⚒ implementation</span>
+            <p>Architected firmware and software layers targeting the STM32N6 Neural-ART NPU, evaluating accuracy trade-offs of quantized models against the on-chip compute budget.</p>
+          </div>
+          <div class="pab-cell wide outcome">
+            <span class="pab-k">✓ outcome</span>
+            <p><strong>Delivered an operational prototype ahead of official silicon availability</strong>, establishing feasibility for low-cost hardware product lines.</p>
+          </div>
+        </div>
+        <div class="proj-foot">
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=STM32N6%20Prototype%20Case%20Study%20%E2%80%94%20HawariTech">Discuss this project under NDA <span class="arr">→</span></a>
+        </div>
+      </article>
+
+      <!-- proof 3 -->
+      <article class="proj reveal" data-id="proof/03">
+        <div class="proj-top">
+          <h3 class="proj-name">Scalable Serverless Platform</h3>
+          <span class="proj-co">FIGZI — co-founder, end-to-end technical lead</span>
+        </div>
+        <div class="tag-row proj-tags">
+          <span class="tag">aws</span><span class="tag">appsync · graphql</span><span class="tag">lambda</span>
+          <span class="tag">dynamodb</span><span class="tag">flutter</span>
+        </div>
+        <div class="pab">
+          <div class="pab-cell">
+            <span class="pab-k">◈ context</span>
+            <p>Event-driven mobile platform with high-concurrency location queries from launch day.</p>
+          </div>
+          <div class="pab-cell">
+            <span class="pab-k">⚒ implementation</span>
+            <p>Built an event-driven backend on AWS — AppSync (GraphQL), Lambda, and Amplify — paired with a Flutter client.</p>
+          </div>
+          <div class="pab-cell wide outcome">
+            <span class="pab-k">✓ outcome</span>
+            <p><strong>Supported 10,000+ users in year one</strong> with minimal infrastructure overhead and <strong>zero dedicated DevOps personnel</strong>.</p>
+          </div>
+        </div>
+        <div class="proj-foot">
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Serverless%20Platform%20Case%20Study%20%E2%80%94%20HawariTech">Discuss this project under NDA <span class="arr">→</span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 4 · ABOUT ================= -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="head">
+      <span class="k eyebrow">about basil hawari</span>
+      <h2>A principal engineer you work with directly.</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="lede">I am a Principal-level software and AI engineer with <span class="accent">15+ years</span> designing and shipping systems across the entire stack — silicon-level optimization, low-latency C++ services, production cloud infrastructure, and mobile applications.</p>
+        <div class="about-body">
+          <p>Prior to founding HawariTech, I led R&amp;D initiatives for <strong>safety-critical edge-AI hardware</strong> (commercial pool-safety systems on NVIDIA Jetson), built <strong>C++ robotics and IoT control software</strong> integrated with AWS IoT and MQTT, and <strong>co-founded a venture-backed startup</strong>, architecting its serverless backend from zero. Earlier, I led a DevOps transformation that moved a mission-critical platform from weekly to multiple daily deployments at 99.9% uptime, and scaled an LMS to 20,000+ daily users.</p>
+          <p>That career spans <strong>every layer of the compute continuum</strong> — from a neural network quantized for an ARM Cortex-M class NPU, through Jetson edge nodes running optimized inference, to event-driven cloud backends orchestrating the fleet. Few consultancies can design across that whole spectrum, because few have personally built at every layer.</p>
+        </div>
+        <div class="guarantee">
+          <p><strong>When you hire HawariTech, you work directly with me.</strong> There are no account managers, outsourced junior developers, or handoff layers. I write the architecture, profile the bottlenecks, and deliver the production code.</p>
+        </div>
+      </div>
+
+      <aside class="reveal">
+        <div class="cred">
+          <div class="scope-head">
+            <span>whoami.json</span>
+            <span class="pulse">verified</span>
+          </div>
+          <div class="cred-row"><span class="lk">name</span><span class="lv"><strong>Basil Hawari</strong></span></div>
+          <div class="cred-row"><span class="lk">title</span><span class="lv">Principal software &amp; AI engineer</span></div>
+          <div class="cred-row"><span class="lk">since</span><span class="lv">15+ years shipping production systems</span></div>
+          <div class="cred-row"><span class="lk">origin</span><span class="lv">Remote worldwide · Haifa, Israel</span></div>
+          <div class="cred-row"><span class="lk">engagement</span><span class="lv">Direct with the principal — no bench</span></div>
+          <div class="tag-row">
+            <span class="tag">c++</span><span class="tag">c</span><span class="tag">python</span>
+            <span class="tag">rust</span><span class="tag">flutter</span><span class="tag">aws</span>
+            <span class="tag">tensorrt</span><span class="tag">pytorch</span><span class="tag">opencv</span>
+          </div>
+        </div>
+
+        <div class="orgs">
+          <div class="orgs-k">where that experience was built</div>
+          <div class="orgs-grid">
+            <div class="org"><div class="nm">Coral Smart Pools</div><div class="rl">edge-AI R&amp;D lead · Jetson + STM32N6</div></div>
+            <div class="org"><div class="nm">FIGZI</div><div class="rl">co-founder · serverless AWS from zero</div></div>
+            <div class="org"><div class="nm">HLM Media Group</div><div class="rl">DevOps lead · CI/CD · 99.9% uptime</div></div>
+            <div class="org"><div class="nm">Livetop</div><div class="rl">full-stack lead · 20K+ daily users</div></div>
+            <div class="org"><div class="nm">Univ. of Haifa</div><div class="rl">research software · vision + Unity</div></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5 · ENGAGEMENTS ================= -->
+<section class="section alt" id="engagements">
+  <div class="wrap">
+    <div class="head">
+      <span class="k eyebrow">how we work</span>
+      <h2>Three ways to engage — pick the entry that fits.</h2>
+      <p class="sec-sub">Each model starts with a technical discussion, not a sales deck. Scope and estimates are grounded in your codebase and hardware, not generic proposals.</p>
+    </div>
+
+    <div class="cards-3">
+      <article class="p-card eng-card reveal">
+        <div class="eng-meta">
+          <div class="p-num"><b>E—01</b></div>
+          <span class="chip">fixed scope · 1–2 weeks</span>
+        </div>
+        <h3 class="p-title" style="margin-top:0.2rem;">Architecture &amp; Feasibility Audit</h3>
+        <div class="eng-goal box">
+          <div class="box-k">goal</div>
+          <p>Determine whether a proposed edge-AI, vision, or cloud architecture is viable before you commit significant hardware or hiring budget.</p>
+        </div>
+        <div class="box">
+          <div class="box-k">deliverables</div>
+          <p style="color:var(--ink-dim); font-size:0.92rem;">Detailed technical audit · silicon selection analysis · latency/accuracy profiling on sample data · actionable implementation blueprint.</p>
+        </div>
+        <div class="eng-cta">
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Architecture%20Audit%20%E2%80%94%20HawariTech">Start with an audit call <span class="arr">→</span></a>
+        </div>
+      </article>
+
+      <article class="p-card eng-card reveal">
+        <div class="eng-meta">
+          <div class="p-num"><b>E—02</b></div>
+          <span class="chip">project-based · 4–8 weeks</span>
+        </div>
+        <h3 class="p-title" style="margin-top:0.2rem;">Prototype &amp; Systems Delivery</h3>
+        <div class="eng-goal box">
+          <div class="box-k">goal</div>
+          <p>Build an operational proof of concept, or ship a specific subsystem — a custom inference pipeline, WebRTC streaming engine, or IoT backend.</p>
+        </div>
+        <div class="box">
+          <div class="box-k">deliverables</div>
+          <p style="color:var(--ink-dim); font-size:0.92rem;">Documented, tested C++/Python/cloud codebase · integration tests · deployment scripts · performance benchmarks.</p>
+        </div>
+        <div class="eng-cta">
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Prototype%20Delivery%20%E2%80%94%20HawariTech">Discuss your subsystem <span class="arr">→</span></a>
+        </div>
+      </article>
+
+      <article class="p-card eng-card reveal">
+        <div class="eng-meta">
+          <div class="p-num"><b>E—03</b></div>
+          <span class="chip">retainer · embedded</span>
+        </div>
+        <h3 class="p-title" style="margin-top:0.2rem;">Fractional Principal Engineer</h3>
+        <div class="eng-goal box">
+          <div class="box-k">goal</div>
+          <p>Strategic technical leadership and hands-on implementation for teams that lack senior embedded-AI or systems-architecture expertise.</p>
+        </div>
+        <div class="box">
+          <div class="box-k">deliverables</div>
+          <p style="color:var(--ink-dim); font-size:0.92rem;">System architecture design · sprint-level code contributions · code reviews · technical mentorship for your internal team.</p>
+        </div>
+        <div class="eng-cta">
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Fractional%20Principal%20%E2%80%94%20HawariTech">Talk about embedding me <span class="arr">→</span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 6 · CONTACT ================= -->
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact-panel reveal">
+      <div>
+        <h2>Bring the hard problem first.</h2>
+        <p class="intro">
+          No intake forms, no account managers, no qualification funnel. If your problem involves real-time
+          perception, constrained silicon, or a backend that must not fall over — send the context and the
+          constraints, and let's talk architecture.
+        </p>
+
+        <ul class="methods">
+          <li>
+            <span class="m-k">email</span>
+            <a class="m-a" href="mailto:basiljhs@gmail.com">basiljhs@gmail.com <span class="arr">↗</span></a>
+          </li>
+          <li>
+            <span class="m-k">calendar</span>
+            <a class="m-a" href="mailto:basiljhs@gmail.com?subject=30-Minute%20Technical%20Discussion%20%E2%80%94%20HawariTech">Schedule a 30-minute technical discussion <span class="arr">↗</span></a>
+            <span class="m-note">Opens a pre-filled email — replace with your Cal.com / Calendly link when live (see README).</span>
+          </li>
+          <li>
+            <span class="m-k">phone · whatsapp</span>
+            <a class="m-a" href="tel:+972503634193">+972 50-363-4193 <span class="arr">↗</span></a>
+          </li>
+          <li>
+            <span class="m-k">profile</span>
+            <a class="m-a" href="https://www.linkedin.com/in/basilhawari93706658/" target="_blank" rel="noopener">LinkedIn — basilhawari <span class="arr">↗</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact-side">
+        <div>
+          <div class="side-k">logistics</div>
+          <ul class="mini-bullets">
+            <li>Based in Haifa, Israel · remote worldwide</li>
+            <li>Working with teams in North America, Europe, and Israel</li>
+            <li>Engagements from 1–2 week audits to embedded retainers</li>
+            <li>NDA-friendly — signed before any architecture detail is shared</li>
+          </ul>
+        </div>
+        <div class="scope-card" style="background:var(--card);">
+          <div class="scope-head"><span>handshake_protocol</span><span class="pulse">ready</span></div>
+          <div class="scope-row"><span class="lk">step 1</span><span class="lv">email / call — context + constraints</span></div>
+          <div class="scope-row"><span class="lk">step 2</span><span class="lv">30-min technical discussion</span></div>
+          <div class="scope-row"><span class="lk">step 3</span><span class="lv">technical brief with honest estimates</span></div>
+          <div class="scope-foot">no_sales_deck_required = true</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>HawariTech</h4>
+        <p>Independent software &amp; AI consultancy — edge AI, computer vision, and distributed systems engineering. Founded by Basil Hawari, Haifa, Israel.</p>
+      </div>
+      <div>
+        <h4>Sections</h4>
+        <a href="#practice">Practice areas</a>
+        <a href="#proof">Selected proof</a>
+        <a href="#about">About Basil</a>
+        <a href="#engagements">Engagement models</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <a href="mailto:basiljhs@gmail.com">basiljhs@gmail.com</a>
+        <a href="tel:+972503634193">+972 50-363-4193</a>
+        <a href="https://www.linkedin.com/in/basilhawari93706658/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 HawariTech · all rights reserved</span>
+      <span>static · no trackers · no cookies · loads in milliseconds</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal-on-scroll (skipped automatically under prefers-reduced-motion via CSS).
+  (function () {
+    var els = document.querySelectorAll(".reveal");
+    if (!els.length || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "HawariTech",
+  "description": "Independent software and AI consultancy led by Basil Hawari — edge AI, computer vision, real-time media and IoT architecture, and distributed systems engineering.",
+  "email": "basiljhs@gmail.com",
+  "telephone": "+972503634193",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Haifa",
+    "addressCountry": "IL"
+  },
+  "areaServed": "Worldwide",
+  "founder": {
+    "@type": "Person",
+    "name": "Basil Hawari",
+    "jobTitle": "Principal Software & AI Engineer",
+    "sameAs": ["https://www.linkedin.com/in/basilhawari93706658/"]
+  },
+  "knowsAbout": ["Edge AI", "Computer Vision", "Embedded Systems", "NVIDIA Jetson", "STM32N6", "TensorRT", "WebRTC", "AWS", "Serverless Architecture", "Distributed Systems"]
+}
+</script>
+
+</body>
+</html>
