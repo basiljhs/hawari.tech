@@ -21,7 +21,8 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="HawariTech — Edge AI, Computer Vision &amp; Distributed Systems Engineering">
 <meta property="og:description" content="Independent consultancy led by Basil Hawari. Real-time perception on constrained silicon, low-latency media pipelines, and production cloud backends — engineered and delivered directly by the principal.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1017'/%3E%3Ctext x='32' y='44' font-family='monospace' font-size='34' fill='%2355d6be' text-anchor='middle' font-weight='700'%3Eh.%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="assets/logo-trans.png">
+<link rel="apple-touch-icon" sizes="300x300" href="assets/logo-trans.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -168,11 +169,11 @@
     text-decoration: none; letter-spacing: -0.02em; white-space: nowrap;
   }
   .brand .dot { color: var(--accent); }
-  .brand-mark {
-    width: 10px; height: 10px; border-radius: 2px;
-    background: var(--accent); display: inline-block;
-    box-shadow: 0 0 0 3px rgba(85, 214, 190, 0.18);
+  .brand-logo {
+    width: 26px; height: 26px; object-fit: contain; flex: none;
+    filter: drop-shadow(0 0 6px rgba(85, 214, 190, 0.25));
   }
+  .foot-logo { margin-bottom: 0.6rem; }
   .nav-links { display: flex; align-items: center; gap: 1.9rem; }
   .nav-links a {
     text-decoration: none; color: var(--ink-dim);
@@ -633,7 +634,7 @@
     .nav-menu summary { padding: 0.38rem 0.5rem; font-size: 0.74rem; }
   }
   @media (max-width: 360px) {
-    .brand-mark { display: none; }
+    .brand-logo { width: 20px; height: 20px; }
     .nav-menu summary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 30vw; }
   }
 
@@ -651,7 +652,7 @@
 <!-- ================= HEADER ================= -->
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="#top"><span class="brand-mark"></span>hawari<span class="dot">.tech</span></a>
+    <a class="brand" href="#top"><img class="brand-logo" src="assets/logo-trans.png" alt="" width="26" height="26" decoding="async">hawari<span class="dot">.tech</span></a>
 
     <nav class="nav-links" aria-label="Primary">
       <a href="#practice" data-i18n="nav.practice">Practice</a>
@@ -1121,6 +1122,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
+        <img class="brand-logo foot-logo" src="assets/logo-trans.png" alt="" width="26" height="26" decoding="async">
         <h4>HawariTech</h4>
         <p data-i18n="footer.blurb">Independent software &amp; AI consultancy — edge AI, computer vision, and distributed systems engineering. Founded by Basil Hawari, Haifa, Israel.</p>
       </div>
