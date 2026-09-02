@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +13,14 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1017'/%3E%3Ctext x='32' y='44' font-family='monospace' font-size='34' fill='%2355d6be' text-anchor='middle' font-weight='700'%3Eh.%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
-     HawariTech — single-page consultancy site (English master)
-     Static, no build step, no runtime dependencies beyond fonts.
-     To swap the booking link / email / phone, search for "mailto:"
+     HawariTech — single-page consultancy site · EN/AR/HE
+     Static, no build step. Language switching is client-side:
+     EN text lives in the markup (works without JS); AR/HE text
+     lives in the I18N dictionary at the bottom of this file.
+     To swap booking link / email / phone, search for "mailto:"
      and the visible contact addresses in this file.
      ============================================================ */
   :root {
@@ -41,6 +43,15 @@
     --maxw: 1160px;
     --r: 14px;
   }
+  /* Arabic / Hebrew font stacks (redefine --mono/--sans per language) */
+  html[lang="ar"] {
+    --sans: "Noto Sans Arabic", "Segoe UI", Tahoma, "Inter", sans-serif;
+    --mono: "JetBrains Mono", "Noto Sans Arabic", ui-monospace, Menlo, Consolas, monospace;
+  }
+  html[lang="he"] {
+    --sans: "Noto Sans Hebrew", "Segoe UI", "Inter", sans-serif;
+    --mono: "JetBrains Mono", "Noto Sans Hebrew", ui-monospace, Menlo, Consolas, monospace;
+  }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -59,6 +70,8 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  html[lang="ar"] body { line-height: 1.85; }
+  html[lang="he"] body { line-height: 1.75; }
 
   ::selection { background: var(--accent); color: var(--accent-ink); }
 
@@ -68,6 +81,7 @@
     outline-offset: 3px;
     border-radius: 4px;
   }
+  button { font-family: inherit; }
 
   .mono { font-family: var(--mono); }
 
@@ -78,12 +92,14 @@
     font-family: var(--mono); font-size: 0.85rem; font-weight: 600;
   }
   .skip-link:focus { left: 0; }
+  html[dir="rtl"] .skip-link { border-radius: 0 0 0 8px; }
 
   .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: 1.5rem; }
   section[id] { scroll-margin-top: 84px; }
 
   /* ---------- typography ---------- */
   h1, h2, h3 { line-height: 1.12; letter-spacing: -0.025em; font-weight: 650; }
+  html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3 { letter-spacing: 0; line-height: 1.35; }
   .k {
     font-family: var(--mono);
     font-size: 0.74rem;
@@ -97,7 +113,15 @@
 
   h2 { font-size: clamp(1.65rem, 3.2vw, 2.4rem); margin-bottom: 1rem; }
   .sec-sub { color: var(--ink-dim); max-width: 620px; font-size: 1.02rem; }
+  html[lang="ar"] .sec-sub { max-width: 46em; }
   .accent { color: var(--accent); }
+
+  /* Neutralize letter-spacing / uppercase on localized micro-labels (Arabic & Hebrew scripts do not track well) */
+  html[lang="ar"] :is(.k, .box-k, .pab-k, .m-k, .side-k, .orgs-k, .lb, .scope-head, .scope-foot, .p-num, .chip, .foot-grid h4, .mini-link, .foot-bottom),
+  html[lang="he"] :is(.k, .box-k, .pab-k, .m-k, .side-k, .orgs-k, .lb, .scope-head, .scope-foot, .p-num, .chip, .foot-grid h4, .mini-link, .foot-bottom) {
+    letter-spacing: 0;
+    text-transform: none;
+  }
 
   /* ---------- header ---------- */
   .site-header {
@@ -108,13 +132,13 @@
     border-bottom: 1px solid var(--line);
   }
   .header-inner {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.9rem;
     height: 64px;
   }
   .brand {
     display: inline-flex; align-items: center; gap: 0.55rem;
     font-family: var(--mono); font-weight: 700; font-size: 1.05rem;
-    text-decoration: none; letter-spacing: -0.02em;
+    text-decoration: none; letter-spacing: -0.02em; white-space: nowrap;
   }
   .brand .dot { color: var(--accent); }
   .brand-mark {
@@ -135,8 +159,26 @@
     font-family: var(--mono); font-size: 0.8rem; font-weight: 600;
     text-decoration: none; padding: 0.5rem 0.95rem; border-radius: 8px;
     border: 1px solid transparent; transition: background 0.15s, transform 0.15s;
+    white-space: nowrap;
   }
   .nav-cta:hover { background: var(--accent-hi); transform: translateY(-1px); }
+
+  /* language switch */
+  .lang-switch {
+    display: inline-flex; align-items: center; gap: 2px;
+    border: 1px solid var(--line-strong); border-radius: 9px;
+    padding: 2px; background: rgba(7, 11, 16, 0.5);
+    flex: none;
+  }
+  .ls-btn {
+    appearance: none; border: none; background: transparent; cursor: pointer;
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
+    color: var(--ink-faint); padding: 0.34rem 0.6rem; border-radius: 7px;
+    line-height: 1; transition: background 0.15s, color 0.15s;
+  }
+  .ls-btn:hover { color: var(--ink); }
+  .ls-btn.active { background: var(--accent); color: var(--accent-ink); }
+
   .nav-menu { display: none; }
   .nav-menu summary {
     cursor: pointer; list-style: none;
@@ -146,7 +188,7 @@
   }
   .nav-menu summary::-webkit-details-marker { display: none; }
   .nav-menu[open] .menu-panel {
-    position: absolute; right: 1rem; top: 58px;
+    position: absolute; inset-inline-end: 1rem; top: 58px;
     background: var(--card-raise); border: 1px solid var(--line-strong);
     border-radius: 12px; padding: 0.6rem; min-width: 220px;
     display: flex; flex-direction: column; box-shadow: 0 18px 40px rgba(0,0,0,0.5);
@@ -160,7 +202,7 @@
   /* ---------- hero ---------- */
   .hero { position: relative; overflow: hidden; padding: 5.5rem 0 3.5rem; }
   .hero::before {
-    content: ""; position: absolute; top: -420px; right: -220px;
+    content: ""; position: absolute; top: -420px; inset-inline-end: -220px;
     width: 760px; height: 760px; pointer-events: none;
     background: radial-gradient(circle, rgba(85,214,190,0.10) 0%, transparent 65%);
   }
@@ -170,10 +212,12 @@
     position: relative; z-index: 1;
   }
   .hero h1 { font-size: clamp(2.25rem, 5.1vw, 3.7rem); margin: 0 0 1.4rem; max-width: 21ch; }
+  html[lang="ar"] .hero h1 { max-width: 16ch; font-size: clamp(2rem, 4.4vw, 3.2rem); }
   .hero .sub {
     color: var(--ink-dim); font-size: clamp(1.02rem, 1.6vw, 1.14rem);
     line-height: 1.7; max-width: 56ch; margin-bottom: 2.2rem;
   }
+  html[lang="ar"] .hero .sub { max-width: 40em; }
   .hero .sub strong { color: var(--ink); font-weight: 600; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; margin-bottom: 1.1rem; }
   .btn {
@@ -188,11 +232,12 @@
   .btn-primary:hover { background: var(--accent-hi); }
   .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent-hi); }
-  .btn .arr { font-family: var(--mono); }
+  .btn .arr { font-family: var(--mono); display: inline-block; }
   .btn svg { flex: none; }
   .email-line {
     font-family: var(--mono); font-size: 0.84rem; color: var(--ink-faint);
-    display: inline-flex; align-items: center; gap: 0.6rem;
+    display: inline-flex; align-items: center; gap: 0.6rem; direction: ltr;
+    unicode-bidi: isolate;
   }
   .email-line a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px dashed var(--line-strong); }
   .email-line a:hover { color: var(--accent-hi); border-color: var(--accent); }
@@ -244,7 +289,7 @@
   .scope-foot {
     margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1px solid var(--line);
     font-family: var(--mono); font-size: 0.74rem; color: var(--ink-faint);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.06em; direction: ltr; unicode-bidi: isolate; text-align: start;
   }
 
   /* snapshot strip */
@@ -254,14 +299,19 @@
     display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 0;
     overflow: hidden;
   }
-  .snap-item { padding: 1.15rem 1.4rem; border-left: 1px solid var(--line); }
-  .snap-item:first-child { border-left: none; }
+  .snap-item { padding: 1.15rem 1.4rem; border-inline-start: 1px solid var(--line); }
+  .snap-item:first-child { border-inline-start: none; }
   .snap-item .lb {
     font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.45rem;
   }
   .snap-item .va { font-size: 0.9rem; color: var(--ink-dim); line-height: 1.55; }
   .snap-item .va strong { color: var(--ink); font-weight: 600; }
+  .snap-item .va { direction: ltr; unicode-bidi: isolate; text-align: start; }
+  /* In RTL pages the snapshot values are mostly latin tokens (Edge AI · Jetson…);
+     keep them left-to-right, but line up against the correct edge. */
+  html[dir="rtl"] .snap-item .va { text-align: start; direction: rtl; }
+  .snap-item .va span.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
 
   /* metrics band */
   .metrics {
@@ -277,6 +327,7 @@
     color: var(--accent); letter-spacing: -0.02em; line-height: 1.1;
   }
   .metric .cap { font-size: 0.84rem; color: var(--ink-faint); margin-top: 0.35rem; max-width: 24ch; }
+  html[lang="ar"] .metric .cap, html[lang="he"] .metric .cap { max-width: none; }
 
   /* ---------- generic sections ---------- */
   .section { padding: clamp(4.2rem, 8vw, 6.5rem) 0; position: relative; }
@@ -309,6 +360,8 @@
   }
   .p-num b { color: var(--accent); font-weight: 600; }
   .p-title { font-size: 1.28rem; font-weight: 650; letter-spacing: -0.015em; }
+  html[lang="ar"] .p-title { letter-spacing: 0; line-height: 1.5; }
+  html[lang="he"] .p-title { letter-spacing: 0; line-height: 1.4; }
   .p-tagrow { margin-top: -0.3rem; }
 
   .box {
@@ -329,6 +382,7 @@
     line-height: 1.5;
   }
   .dl li::before { content: "▸"; color: var(--accent); font-family: var(--mono); flex: none; }
+  html[dir="rtl"] .dl li::before { content: "◂"; }
 
   /* ---------- proof (case studies) ---------- */
   .proof-stack { display: flex; flex-direction: column; gap: 1.4rem; }
@@ -339,12 +393,13 @@
   }
   .proj:hover { border-color: var(--line-strong); }
   .proj::before {
-    content: attr(data-id); position: absolute; top: 0.9rem; right: 1.4rem;
+    content: attr(data-id); position: absolute; top: 0.9rem; inset-inline-end: 1.4rem;
     font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em;
     color: rgba(130, 165, 205, 0.35);
   }
-  .proj-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.8rem 1.2rem; margin-bottom: 0.9rem; }
+  .proj-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.8rem 1.2rem; margin-bottom: 0.9rem; padding-inline-end: 3.2rem; }
   .proj-name { font-size: 1.42rem; font-weight: 650; letter-spacing: -0.02em; }
+  html[dir="rtl"] .proj-name { letter-spacing: 0; }
   .proj-co { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-faint); }
   .proj-tags { margin-bottom: 1.3rem; }
   .pab { display: grid; grid-template-columns: 0.85fr 1.25fr; gap: 1.2rem 1.6rem; }
@@ -354,8 +409,6 @@
     text-transform: uppercase; color: var(--ink-faint);
     display: flex; align-items: center; gap: 0.5rem;
   }
-  .pab-k .ic { color: var(--accent); }
-  .pab-k.context { color: var(--ink-faint); }
   .pab p { font-size: 0.93rem; color: var(--ink-dim); line-height: 1.6; }
   .pab-cell.wide { grid-column: 1 / -1; }
   .outcome { border: 1px solid rgba(126,226,168,0.22); background: rgba(126,226,168,0.05); border-radius: 10px; }
@@ -370,6 +423,9 @@
   .mini-link:hover { color: var(--accent-hi); }
   .mini-link .arr { transition: transform 0.15s; }
   .mini-link:hover .arr { transform: translateX(3px); }
+  html[dir="rtl"] .mini-link .arr { display: inline-block; transform: scaleX(-1); }
+  html[dir="rtl"] .mini-link:hover .arr { transform: scaleX(-1) translateX(3px); }
+  html[dir="rtl"] .btn .arr { display: inline-block; transform: scaleX(-1); }
 
   /* ---------- about ---------- */
   .about-grid { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
@@ -377,13 +433,15 @@
     font-size: clamp(1.1rem, 2vw, 1.32rem); line-height: 1.65; color: var(--ink);
     letter-spacing: -0.01em; margin-bottom: 1.4rem;
   }
+  html[dir="rtl"] .lede { letter-spacing: 0; }
   .lede .accent { color: var(--accent-hi); }
   .about-body p { color: var(--ink-dim); margin-bottom: 1.15rem; font-size: 1rem; line-height: 1.75; }
   .about-body strong { color: var(--ink); font-weight: 600; }
   .guarantee {
-    border-left: 3px solid var(--accent); background: rgba(85,214,190,0.05);
+    border-inline-start: 3px solid var(--accent); background: rgba(85,214,190,0.05);
     padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin-top: 1.6rem;
   }
+  html[dir="rtl"] .guarantee { border-radius: 10px 0 0 10px; }
   .guarantee p { color: var(--ink); margin-bottom: 0; font-size: 0.98rem; }
 
   .cred {
@@ -395,6 +453,8 @@
     display: grid; grid-template-columns: 110px 1fr; gap: 0.9rem; align-items: baseline;
     padding: 0.5rem 0; border-bottom: 1px dotted var(--line); font-size: 0.93rem;
   }
+  html[dir="rtl"] .cred-row { grid-template-columns: 1fr 110px; }
+  html[dir="rtl"] .cred-row .lk { text-align: end; }
   .cred-row:last-of-type { border-bottom: none; }
   .cred-row .lk { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
   .cred-row .lv { color: var(--ink-dim); }
@@ -438,8 +498,14 @@
     display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem);
     overflow: hidden;
   }
+  html[dir="rtl"] .contact-panel {
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(85,214,190,0.10), transparent 60%),
+      linear-gradient(180deg, var(--card) 0%, var(--surface) 100%);
+  }
   .contact-panel h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 1.1rem; }
   .contact-panel .intro { color: var(--ink-dim); font-size: 1.03rem; line-height: 1.75; max-width: 52ch; margin-bottom: 2rem; }
+  html[lang="ar"] .contact-panel .intro { max-width: 40em; }
   .methods { list-style: none; display: flex; flex-direction: column; }
   .methods li { display: flex; flex-direction: column; gap: 0.15rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
   .methods li:first-child { padding-top: 0; }
@@ -447,7 +513,8 @@
   .methods .m-a { font-size: 1.06rem; font-weight: 600; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 0.55rem; width: fit-content; }
   .methods .m-a:hover { color: var(--accent-hi); }
   .methods .m-a .arr { font-family: var(--mono); color: var(--accent); font-size: 0.9rem; }
-  .methods .m-note { font-size: 0.84rem; color: var(--ink-faint); }
+  .methods .m-a { direction: ltr; unicode-bidi: isolate; }
+  .methods li[dir] .m-a { direction: rtl; unicode-bidi: isolate; }
 
   .contact-side { display: flex; flex-direction: column; justify-content: space-between; gap: 1.6rem; }
   .side-k {
@@ -466,6 +533,7 @@
     text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.9rem; font-weight: 600;
   }
   .foot-grid p { color: var(--ink-faint); font-size: 0.9rem; line-height: 1.7; max-width: 34ch; }
+  html[lang="ar"] .foot-grid p { max-width: 48em; }
   .foot-grid a { display: block; color: var(--ink-dim); text-decoration: none; font-size: 0.92rem; padding: 0.18rem 0; width: fit-content; }
   .foot-grid a:hover { color: var(--accent-hi); }
   .foot-bottom {
@@ -487,12 +555,15 @@
     .pab-cell.wide { grid-column: auto; }
     .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
     .snap { grid-template-columns: 1fr; }
-    .snap-item { border-left: none; border-top: 1px solid var(--line); }
+    .snap-item { border-inline-start: none; border-top: 1px solid var(--line); }
     .snap-item:first-child { border-top: none; }
     .orgs-grid { grid-template-columns: repeat(2, 1fr); }
     .foot-grid { grid-template-columns: 1fr; gap: 2rem; }
     .nav-links { display: none; }
     .nav-menu { display: block; position: relative; }
+  }
+  @media (max-width: 700px) {
+    .nav-cta { display: none; }  /* still reachable inside the menu */
   }
   @media (max-width: 560px) {
     .metrics-grid { grid-template-columns: 1fr 1fr; }
@@ -508,7 +579,7 @@
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
 
 <!-- ================= HEADER ================= -->
 <header class="site-header">
@@ -516,22 +587,28 @@
     <a class="brand" href="#top"><span class="brand-mark"></span>hawari<span class="dot">.tech</span></a>
 
     <nav class="nav-links" aria-label="Primary">
-      <a href="#practice">Practice</a>
-      <a href="#proof">Proof</a>
-      <a href="#about">About</a>
-      <a href="#engagements">Engagements</a>
+      <a href="#practice" data-i18n="nav.practice">Practice</a>
+      <a href="#proof" data-i18n="nav.proof">Proof</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#engagements" data-i18n="nav.engagements">Engagements</a>
     </nav>
 
-    <a class="nav-cta" href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech">Book a technical call</a>
+    <div class="lang-switch" role="group" aria-label="Language / اللغة / שפה">
+      <button type="button" class="ls-btn" data-lang="en" aria-label="English" title="English">EN</button>
+      <button type="button" class="ls-btn" data-lang="he" aria-label="עברית" title="עברית">ע</button>
+      <button type="button" class="ls-btn" data-lang="ar" aria-label="العربية" title="العربية">ع</button>
+    </div>
+
+    <a class="nav-cta" href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech" data-i18n-mailto="schedCall" data-i18n="cta.book">Book a technical call</a>
 
     <details class="nav-menu">
-      <summary>Menu</summary>
+      <summary data-i18n="menu">Menu</summary>
       <div class="menu-panel">
-        <a href="#practice">Practice areas</a>
-        <a href="#proof">Selected proof</a>
-        <a href="#about">About Basil</a>
-        <a href="#engagements">Engagement models</a>
-        <a href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech">Book a technical call</a>
+        <a href="#practice" data-i18n="menu.practice">Practice areas</a>
+        <a href="#proof" data-i18n="menu.proof">Selected proof</a>
+        <a href="#about" data-i18n="menu.about">About Basil</a>
+        <a href="#engagements" data-i18n="menu.engagements">Engagement models</a>
+        <a href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech" data-i18n-mailto="schedCall" data-i18n="cta.bookLong">Book a technical call</a>
       </div>
     </details>
   </div>
@@ -544,39 +621,39 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <span class="k eyebrow">independent consultancy &middot; principal-led</span>
-        <h1>Edge AI, Computer Vision, and <span class="accent">Distributed Systems</span> Engineering.</h1>
-        <p class="sub">
+        <span class="k eyebrow" data-i18n="hero.eyebrow">independent consultancy &middot; principal-led</span>
+        <h1 data-i18n="hero.title">Edge AI, Computer Vision, and <span class="accent">Distributed Systems</span> Engineering.</h1>
+        <p class="sub" data-i18n="hero.sub">
           HawariTech is an independent consultancy led by Basil Hawari. I help engineering teams
           <strong>design, optimize, and deploy</strong> real-time perception models and scalable cloud
           architectures — from resource-constrained silicon to production backends.
         </p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech">
-            Schedule a Technical Call <span class="arr">↗</span>
+          <a class="btn btn-primary" href="mailto:basiljhs@gmail.com?subject=Technical%20Call%20%E2%80%94%20HawariTech" data-i18n-mailto="schedCall">
+            <span data-i18n="hero.ctaPrimary">Schedule a Technical Call</span> <span class="arr">↗</span>
           </a>
           <a class="btn btn-ghost" href="mailto:basiljhs@gmail.com">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-            Email Directly
+            <span data-i18n="hero.ctaMail">Email Directly</span>
           </a>
         </div>
-        <span class="email-line">→ <a href="mailto:basiljhs@gmail.com">basiljhs@gmail.com</a> &nbsp;·&nbsp; <a href="tel:+972503634193">+972 50-363-4193</a></span>
+        <span class="email-line"><a href="mailto:basiljhs@gmail.com">basiljhs@gmail.com</a>&nbsp;·&nbsp;<a href="tel:+972503634193">+972 50-363-4193</a></span>
       </div>
 
       <aside class="scope-card" aria-label="Engagement profile">
         <div class="scope-head">
           <span>scope_card.001</span>
-          <span class="pulse">active</span>
+          <span class="pulse" data-i18n="status.active">active</span>
         </div>
         <div class="scope-row"><span class="lk">operator</span><span class="lv">basil_hawari</span></div>
-        <div class="scope-row"><span class="lk">role</span><span class="lv">principal engineer &mdash; direct hire</span></div>
-        <div class="scope-row"><span class="lk">layer</span><span class="lv"><em>silicon → edge → cloud</em></span></div>
+        <div class="scope-row"><span class="lk">role</span><span class="lv" data-i18n="scope.role">principal engineer &mdash; direct hire</span></div>
+        <div class="scope-row"><span class="lk">layer</span><span class="lv" data-i18n="scope.layer"><em>silicon → edge → cloud</em></span></div>
         <div class="scope-row"><span class="lk">stack</span><span class="lv">c++ · python · aws</span></div>
         <div class="scope-row"><span class="lk">targets</span><span class="lv">jetson · stm32n6 · arm64</span></div>
         <div class="scope-checks">
-          <div class="scope-check"><span class="tick">✓</span> You work directly with me</div>
-          <div class="scope-check"><span class="tick">✓</span> No account managers</div>
-          <div class="scope-check"><span class="tick">✓</span> No outsourced bench or handoff layers</div>
+          <div class="scope-check"><span class="tick">✓</span><span data-i18n="scope.c1">You work directly with me</span></div>
+          <div class="scope-check"><span class="tick">✓</span><span data-i18n="scope.c2">No account managers</span></div>
+          <div class="scope-check"><span class="tick">✓</span><span data-i18n="scope.c3">No outsourced bench or handoff layers</span></div>
         </div>
         <div class="scope-foot">delivery_model: principal_builds_the_production_code</div>
       </aside>
@@ -584,16 +661,16 @@
 
     <div class="snap reveal">
       <div class="snap-item">
-        <div class="lb">focus</div>
-        <div class="va"><strong>Edge AI</strong> · <strong>Computer Vision</strong> · Embedded MCUs/MPUs · <strong>AWS Cloud</strong></div>
+        <div class="lb" data-i18n="snap.focus">focus</div>
+        <div class="va" data-i18n="snap.focusVal"><strong>Edge AI</strong> · <strong>Computer Vision</strong> · Embedded MCUs/MPUs · <strong>AWS Cloud</strong></div>
       </div>
       <div class="snap-item">
-        <div class="lb">target silicon</div>
-        <div class="va">NVIDIA Jetson · STM32N6 · ARM architectures</div>
+        <div class="lb" data-i18n="snap.silicon">target silicon</div>
+        <div class="va" data-i18n="snap.siliconVal">NVIDIA Jetson · STM32N6 · ARM architectures</div>
       </div>
       <div class="snap-item">
-        <div class="lb">location</div>
-        <div class="va">Remote worldwide · Based in Haifa, Israel</div>
+        <div class="lb" data-i18n="snap.location">location</div>
+        <div class="va" data-i18n="snap.locationVal">Remote worldwide · Based in Haifa, Israel</div>
       </div>
     </div>
   </div>
@@ -604,19 +681,19 @@
   <div class="wrap metrics-grid reveal">
     <div class="metric">
       <div class="num">15+</div>
-      <div class="cap">years shipping production systems across the full stack</div>
+      <div class="cap" data-i18n="metric1">years shipping production systems across the full stack</div>
     </div>
     <div class="metric">
       <div class="num">90%+</div>
-      <div class="cap">inference latency reduction on a Jetson safety deployment</div>
+      <div class="cap" data-i18n="metric2">inference latency reduction on a Jetson safety deployment</div>
     </div>
     <div class="metric">
       <div class="num">20K+</div>
-      <div class="cap">daily users served on platforms architected &amp; scaled</div>
+      <div class="cap" data-i18n="metric3">daily users served on platforms architected &amp; scaled</div>
     </div>
     <div class="metric">
       <div class="num">99.9%</div>
-      <div class="cap">uptime on mission-critical infrastructure under management</div>
+      <div class="cap" data-i18n="metric4">uptime on mission-critical infrastructure under management</div>
     </div>
   </div>
 </div>
@@ -625,25 +702,25 @@
 <section class="section" id="practice">
   <div class="wrap">
     <div class="head">
-      <span class="k eyebrow">practice areas</span>
-      <h2>I group work by the technical problem you are trying to solve.</h2>
-      <p class="sec-sub">Not a bare list of technologies — three problem spaces where model accuracy, hardware constraints, and latency budgets collide with real deployments.</p>
+      <span class="k eyebrow" data-i18n="eyebrow.practice">practice areas</span>
+      <h2 data-i18n="practice.h2">I group work by the technical problem you are trying to solve.</h2>
+      <p class="sec-sub" data-i18n="practice.sub">Not a bare list of technologies — three problem spaces where model accuracy, hardware constraints, and latency budgets collide with real deployments.</p>
     </div>
 
     <div class="cards-3">
       <!-- A -->
       <article class="p-card reveal">
         <div class="p-num">P—01</div>
-        <h3 class="p-title">Edge AI &amp; Computer Vision Deployment</h3>
+        <h3 class="p-title" data-i18n="practice.p1.title">Edge AI &amp; Computer Vision Deployment</h3>
         <div class="box prob">
-          <div class="box-k">⚠ the problem</div>
-          <p>Models running in Python on high-end GPUs fail under physical deployment constraints — thermal throttling, strict latency budgets, and memory limits.</p>
+          <div class="box-k" data-i18n="practice.problem">⚠ the problem</div>
+          <p data-i18n="practice.p1.problem">Models running in Python on high-end GPUs fail under physical deployment constraints — thermal throttling, strict latency budgets, and memory limits.</p>
         </div>
         <ul class="dl">
-          <li>Custom inference engines in C++ on TensorRT, ONNX Runtime, and CUDA.</li>
-          <li>Model optimization, quantization, and pruning for real-time edge execution.</li>
-          <li>Fusion of classical vision (OpenCV, homography, multi-view geometry, optical flow) with deep networks for tracking and segmentation.</li>
-          <li>Integration from NVIDIA Jetson to next-gen NPUs like the STM32N6.</li>
+          <li data-i18n="practice.p1.d1">Custom inference engines in C++ on TensorRT, ONNX Runtime, and CUDA.</li>
+          <li data-i18n="practice.p1.d2">Model optimization, quantization, and pruning for real-time edge execution.</li>
+          <li data-i18n="practice.p1.d3">Fusion of classical vision (OpenCV, homography, multi-view geometry, optical flow) with deep networks for tracking and segmentation.</li>
+          <li data-i18n="practice.p1.d4">Integration from NVIDIA Jetson to next-gen NPUs like the STM32N6.</li>
         </ul>
         <div class="tag-row p-tagrow">
           <span class="tag">c++</span><span class="tag">tensorrt</span><span class="tag">onnx</span>
@@ -655,15 +732,15 @@
       <!-- B -->
       <article class="p-card reveal">
         <div class="p-num">P—02</div>
-        <h3 class="p-title">Real-Time Media &amp; IoT Architecture</h3>
+        <h3 class="p-title" data-i18n="practice.p2.title">Real-Time Media &amp; IoT Architecture</h3>
         <div class="box prob">
-          <div class="box-k">⚠ the problem</div>
-          <p>Edge devices must stream video, communicate status, and receive commands without dropping frames or introducing unacceptable latency.</p>
+          <div class="box-k" data-i18n="practice.problem">⚠ the problem</div>
+          <p data-i18n="practice.p2.problem">Edge devices must stream video, communicate status, and receive commands without dropping frames or introducing unacceptable latency.</p>
         </div>
         <ul class="dl">
-          <li>Ultra-low-latency video streaming pipelines with WebRTC, GStreamer, and C++.</li>
-          <li>Reliable IoT telemetry, command, and control backends via AWS IoT Core and MQTT.</li>
-          <li>Edge-to-cloud sync for automated synthetic data capture, metrics logging, and model monitoring.</li>
+          <li data-i18n="practice.p2.d1">Ultra-low-latency video streaming pipelines with WebRTC, GStreamer, and C++.</li>
+          <li data-i18n="practice.p2.d2">Reliable IoT telemetry, command, and control backends via AWS IoT Core and MQTT.</li>
+          <li data-i18n="practice.p2.d3">Edge-to-cloud sync for automated synthetic data capture, metrics logging, and model monitoring.</li>
         </ul>
         <div class="tag-row p-tagrow">
           <span class="tag">webrtc</span><span class="tag">gstreamer</span><span class="tag">mqtt</span>
@@ -674,15 +751,15 @@
       <!-- C -->
       <article class="p-card reveal">
         <div class="p-num">P—03</div>
-        <h3 class="p-title">Full-System Prototyping &amp; Production Hardening</h3>
+        <h3 class="p-title" data-i18n="practice.p3.title">Full-System Prototyping &amp; Production Hardening</h3>
         <div class="box prob">
-          <div class="box-k">⚠ the problem</div>
-          <p>Startups and R&amp;D groups need an end-to-end working system to validate a product concept or unblock a hardware roadmap.</p>
+          <div class="box-k" data-i18n="practice.problem">⚠ the problem</div>
+          <p data-i18n="practice.p3.problem">Startups and R&amp;D groups need an end-to-end working system to validate a product concept or unblock a hardware roadmap.</p>
         </div>
         <ul class="dl">
-          <li>Rapid software prototyping on pre-release silicon and custom hardware rigs.</li>
-          <li>Computer vision engines integrated into native mobile apps — iOS, Android, wearables.</li>
-          <li>Serverless cloud backends (AWS Lambda, AppSync, DynamoDB) sized for predictable cost and near-zero maintenance.</li>
+          <li data-i18n="practice.p3.d1">Rapid software prototyping on pre-release silicon and custom hardware rigs.</li>
+          <li data-i18n="practice.p3.d2">Computer vision engines integrated into native mobile apps — iOS, Android, wearables.</li>
+          <li data-i18n="practice.p3.d3">Serverless cloud backends (AWS Lambda, AppSync, DynamoDB) sized for predictable cost and near-zero maintenance.</li>
         </ul>
         <div class="tag-row p-tagrow">
           <span class="tag">aws-lambda</span><span class="tag">appsync</span><span class="tag">dynamodb</span>
@@ -697,17 +774,17 @@
 <section class="section alt" id="proof">
   <div class="wrap">
     <div class="head">
-      <span class="k eyebrow">selected proof points</span>
-      <h2>Outcomes engineers hire on — not marketing claims.</h2>
-      <p class="sec-sub">Structured problem → action → outcome summaries. Details beyond what is NDA-safe are shared on a technical call.</p>
+      <span class="k eyebrow" data-i18n="eyebrow.proof">selected proof points</span>
+      <h2 data-i18n="proof.h2">Outcomes engineers hire on — not marketing claims.</h2>
+      <p class="sec-sub" data-i18n="proof.sub">Structured problem → action → outcome summaries. Details beyond what is NDA-safe are shared on a technical call.</p>
     </div>
 
     <div class="proof-stack">
       <!-- proof 1 -->
       <article class="proj reveal" data-id="proof/01">
         <div class="proj-top">
-          <h3 class="proj-name">Real-Time Edge Safety Vision</h3>
-          <span class="proj-co">Coral Smart Pools — edge-AI R&amp;D lead</span>
+          <h3 class="proj-name" data-i18n="proof.p1.name">Real-Time Edge Safety Vision</h3>
+          <span class="proj-co" data-i18n="proof.p1.co">Coral Smart Pools — edge-AI R&amp;D lead</span>
         </div>
         <div class="tag-row proj-tags">
           <span class="tag">nvidia jetson</span><span class="tag">c++</span><span class="tag">tensorrt</span>
@@ -715,28 +792,28 @@
         </div>
         <div class="pab">
           <div class="pab-cell">
-            <span class="pab-k">◈ context</span>
-            <p>Commercial pool safety system requiring continuous, sub-second human detection under fixed thermal budgets.</p>
+            <span class="pab-k" data-i18n="proof.kContext">◈ context</span>
+            <p data-i18n="proof.p1.context">Commercial pool safety system requiring continuous, sub-second human detection under fixed thermal budgets.</p>
           </div>
           <div class="pab-cell">
-            <span class="pab-k">⚒ implementation</span>
-            <p>Replaced standard inference code with a tailored C++ pipeline on NVIDIA Jetson using TensorRT and custom ResNet optimizations; built low-latency WebRTC feed delivery.</p>
+            <span class="pab-k" data-i18n="proof.kImpl">⚒ implementation</span>
+            <p data-i18n="proof.p1.impl">Replaced standard inference code with a tailored C++ pipeline on NVIDIA Jetson using TensorRT and custom ResNet optimizations; built low-latency WebRTC feed delivery.</p>
           </div>
           <div class="pab-cell wide outcome">
-            <span class="pab-k">✓ outcome</span>
-            <p><strong>Reduced inference latency by over 90%</strong> while running within fixed thermal limits.</p>
+            <span class="pab-k" data-i18n="proof.kOutcome">✓ outcome</span>
+            <p data-i18n="proof.p1.outcome"><strong>Reduced inference latency by over 90%</strong> while running within fixed thermal limits.</p>
           </div>
         </div>
         <div class="proj-foot">
-          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Edge%20Vision%20Case%20Study%20%E2%80%94%20HawariTech">Discuss this project under NDA <span class="arr">→</span></a>
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Edge%20Vision%20Case%20Study%20%E2%80%94%20HawariTech" data-i18n-mailto="edgeVision"><span data-i18n="proof.discuss">Discuss this project under NDA</span> <span class="arr">→</span></a>
         </div>
       </article>
 
       <!-- proof 2 -->
       <article class="proj reveal" data-id="proof/02">
         <div class="proj-top">
-          <h3 class="proj-name">Edge NPU Early-Adopter Prototype</h3>
-          <span class="proj-co">STMicroelectronics STM32N6 — pre-release silicon program</span>
+          <h3 class="proj-name" data-i18n="proof.p2.name">Edge NPU Early-Adopter Prototype</h3>
+          <span class="proj-co" data-i18n="proof.p2.co">STMicroelectronics STM32N6 — pre-release silicon program</span>
         </div>
         <div class="tag-row proj-tags">
           <span class="tag">stm32n6</span><span class="tag">neural-art npu</span><span class="tag">c/c++</span>
@@ -744,28 +821,28 @@
         </div>
         <div class="pab">
           <div class="pab-cell">
-            <span class="pab-k">◈ context</span>
-            <p>Pre-release silicon integration for next-generation edge hardware, before public tooling and silicon availability.</p>
+            <span class="pab-k" data-i18n="proof.kContext">◈ context</span>
+            <p data-i18n="proof.p2.context">Pre-release silicon integration for next-generation edge hardware, before public tooling and silicon availability.</p>
           </div>
           <div class="pab-cell">
-            <span class="pab-k">⚒ implementation</span>
-            <p>Architected firmware and software layers targeting the STM32N6 Neural-ART NPU, evaluating accuracy trade-offs of quantized models against the on-chip compute budget.</p>
+            <span class="pab-k" data-i18n="proof.kImpl">⚒ implementation</span>
+            <p data-i18n="proof.p2.impl">Architected firmware and software layers targeting the STM32N6 Neural-ART NPU, evaluating accuracy trade-offs of quantized models against the on-chip compute budget.</p>
           </div>
           <div class="pab-cell wide outcome">
-            <span class="pab-k">✓ outcome</span>
-            <p><strong>Delivered an operational prototype ahead of official silicon availability</strong>, establishing feasibility for low-cost hardware product lines.</p>
+            <span class="pab-k" data-i18n="proof.kOutcome">✓ outcome</span>
+            <p data-i18n="proof.p2.outcome"><strong>Delivered an operational prototype ahead of official silicon availability</strong>, establishing feasibility for low-cost hardware product lines.</p>
           </div>
         </div>
         <div class="proj-foot">
-          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=STM32N6%20Prototype%20Case%20Study%20%E2%80%94%20HawariTech">Discuss this project under NDA <span class="arr">→</span></a>
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=STM32N6%20Prototype%20Case%20Study%20%E2%80%94%20HawariTech" data-i18n-mailto="stm32"><span data-i18n="proof.discuss">Discuss this project under NDA</span> <span class="arr">→</span></a>
         </div>
       </article>
 
       <!-- proof 3 -->
       <article class="proj reveal" data-id="proof/03">
         <div class="proj-top">
-          <h3 class="proj-name">Scalable Serverless Platform</h3>
-          <span class="proj-co">FIGZI — co-founder, end-to-end technical lead</span>
+          <h3 class="proj-name" data-i18n="proof.p3.name">Scalable Serverless Platform</h3>
+          <span class="proj-co" data-i18n="proof.p3.co">FIGZI — co-founder, end-to-end technical lead</span>
         </div>
         <div class="tag-row proj-tags">
           <span class="tag">aws</span><span class="tag">appsync · graphql</span><span class="tag">lambda</span>
@@ -773,20 +850,20 @@
         </div>
         <div class="pab">
           <div class="pab-cell">
-            <span class="pab-k">◈ context</span>
-            <p>Event-driven mobile platform with high-concurrency location queries from launch day.</p>
+            <span class="pab-k" data-i18n="proof.kContext">◈ context</span>
+            <p data-i18n="proof.p3.context">Event-driven mobile platform with high-concurrency location queries from launch day.</p>
           </div>
           <div class="pab-cell">
-            <span class="pab-k">⚒ implementation</span>
-            <p>Built an event-driven backend on AWS — AppSync (GraphQL), Lambda, and Amplify — paired with a Flutter client.</p>
+            <span class="pab-k" data-i18n="proof.kImpl">⚒ implementation</span>
+            <p data-i18n="proof.p3.impl">Built an event-driven backend on AWS — AppSync (GraphQL), Lambda, and Amplify — paired with a Flutter client.</p>
           </div>
           <div class="pab-cell wide outcome">
-            <span class="pab-k">✓ outcome</span>
-            <p><strong>Supported 10,000+ users in year one</strong> with minimal infrastructure overhead and <strong>zero dedicated DevOps personnel</strong>.</p>
+            <span class="pab-k" data-i18n="proof.kOutcome">✓ outcome</span>
+            <p data-i18n="proof.p3.outcome"><strong>Supported 10,000+ users in year one</strong> with minimal infrastructure overhead and <strong>zero dedicated DevOps personnel</strong>.</p>
           </div>
         </div>
         <div class="proj-foot">
-          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Serverless%20Platform%20Case%20Study%20%E2%80%94%20HawariTech">Discuss this project under NDA <span class="arr">→</span></a>
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Serverless%20Platform%20Case%20Study%20%E2%80%94%20HawariTech" data-i18n-mailto="serverless"><span data-i18n="proof.discuss">Discuss this project under NDA</span> <span class="arr">→</span></a>
         </div>
       </article>
     </div>
@@ -797,19 +874,19 @@
 <section class="section" id="about">
   <div class="wrap">
     <div class="head">
-      <span class="k eyebrow">about basil hawari</span>
-      <h2>A principal engineer you work with directly.</h2>
+      <span class="k eyebrow" data-i18n="eyebrow.about">about basil hawari</span>
+      <h2 data-i18n="about.h2">A principal engineer you work with directly.</h2>
     </div>
 
     <div class="about-grid">
       <div class="reveal">
-        <p class="lede">I am a Principal-level software and AI engineer with <span class="accent">15+ years</span> designing and shipping systems across the entire stack — silicon-level optimization, low-latency C++ services, production cloud infrastructure, and mobile applications.</p>
+        <p class="lede" data-i18n="about.lede">I am a Principal-level software and AI engineer with <span class="accent">15+ years</span> designing and shipping systems across the entire stack — silicon-level optimization, low-latency C++ services, production cloud infrastructure, and mobile applications.</p>
         <div class="about-body">
-          <p>Prior to founding HawariTech, I led R&amp;D initiatives for <strong>safety-critical edge-AI hardware</strong> (commercial pool-safety systems on NVIDIA Jetson), built <strong>C++ robotics and IoT control software</strong> integrated with AWS IoT and MQTT, and <strong>co-founded a venture-backed startup</strong>, architecting its serverless backend from zero. Earlier, I led a DevOps transformation that moved a mission-critical platform from weekly to multiple daily deployments at 99.9% uptime, and scaled an LMS to 20,000+ daily users.</p>
-          <p>That career spans <strong>every layer of the compute continuum</strong> — from a neural network quantized for an ARM Cortex-M class NPU, through Jetson edge nodes running optimized inference, to event-driven cloud backends orchestrating the fleet. Few consultancies can design across that whole spectrum, because few have personally built at every layer.</p>
+          <p data-i18n="about.p1">Prior to founding HawariTech, I led R&amp;D initiatives for <strong>safety-critical edge-AI hardware</strong> (commercial pool-safety systems on NVIDIA Jetson), built <strong>C++ robotics and IoT control software</strong> integrated with AWS IoT and MQTT, and <strong>co-founded a venture-backed startup</strong>, architecting its serverless backend from zero. Earlier, I led a DevOps transformation that moved a mission-critical platform from weekly to multiple daily deployments at 99.9% uptime, and scaled an LMS to 20,000+ daily users.</p>
+          <p data-i18n="about.p2">That career spans <strong>every layer of the compute continuum</strong> — from a neural network quantized for an ARM Cortex-M class NPU, through Jetson edge nodes running optimized inference, to event-driven cloud backends orchestrating the fleet. Few consultancies can design across that whole spectrum, because few have personally built at every layer.</p>
         </div>
         <div class="guarantee">
-          <p><strong>When you hire HawariTech, you work directly with me.</strong> There are no account managers, outsourced junior developers, or handoff layers. I write the architecture, profile the bottlenecks, and deliver the production code.</p>
+          <p data-i18n="about.guarantee"><strong>When you hire HawariTech, you work directly with me.</strong> There are no account managers, outsourced junior developers, or handoff layers. I write the architecture, profile the bottlenecks, and deliver the production code.</p>
         </div>
       </div>
 
@@ -817,13 +894,13 @@
         <div class="cred">
           <div class="scope-head">
             <span>whoami.json</span>
-            <span class="pulse">verified</span>
+            <span class="pulse" data-i18n="status.verified">verified</span>
           </div>
           <div class="cred-row"><span class="lk">name</span><span class="lv"><strong>Basil Hawari</strong></span></div>
-          <div class="cred-row"><span class="lk">title</span><span class="lv">Principal software &amp; AI engineer</span></div>
-          <div class="cred-row"><span class="lk">since</span><span class="lv">15+ years shipping production systems</span></div>
-          <div class="cred-row"><span class="lk">origin</span><span class="lv">Remote worldwide · Haifa, Israel</span></div>
-          <div class="cred-row"><span class="lk">engagement</span><span class="lv">Direct with the principal — no bench</span></div>
+          <div class="cred-row"><span class="lk">title</span><span class="lv" data-i18n="cred.title">Principal software &amp; AI engineer</span></div>
+          <div class="cred-row"><span class="lk">since</span><span class="lv" data-i18n="cred.since">15+ years shipping production systems</span></div>
+          <div class="cred-row"><span class="lk">origin</span><span class="lv" data-i18n="cred.origin">Remote worldwide · Haifa, Israel</span></div>
+          <div class="cred-row"><span class="lk">engagement</span><span class="lv" data-i18n="cred.engagement">Direct with the principal — no bench</span></div>
           <div class="tag-row">
             <span class="tag">c++</span><span class="tag">c</span><span class="tag">python</span>
             <span class="tag">rust</span><span class="tag">flutter</span><span class="tag">aws</span>
@@ -832,13 +909,13 @@
         </div>
 
         <div class="orgs">
-          <div class="orgs-k">where that experience was built</div>
+          <div class="orgs-k" data-i18n="about.orgsK">where that experience was built</div>
           <div class="orgs-grid">
-            <div class="org"><div class="nm">Coral Smart Pools</div><div class="rl">edge-AI R&amp;D lead · Jetson + STM32N6</div></div>
-            <div class="org"><div class="nm">FIGZI</div><div class="rl">co-founder · serverless AWS from zero</div></div>
-            <div class="org"><div class="nm">HLM Media Group</div><div class="rl">DevOps lead · CI/CD · 99.9% uptime</div></div>
-            <div class="org"><div class="nm">Livetop</div><div class="rl">full-stack lead · 20K+ daily users</div></div>
-            <div class="org"><div class="nm">Univ. of Haifa</div><div class="rl">research software · vision + Unity</div></div>
+            <div class="org"><div class="nm">Coral Smart Pools</div><div class="rl" data-i18n="about.org1">edge-AI R&amp;D lead · Jetson + STM32N6</div></div>
+            <div class="org"><div class="nm">FIGZI</div><div class="rl" data-i18n="about.org2">co-founder · serverless AWS from zero</div></div>
+            <div class="org"><div class="nm">HLM Media Group</div><div class="rl" data-i18n="about.org3">DevOps lead · CI/CD · 99.9% uptime</div></div>
+            <div class="org"><div class="nm">Livetop</div><div class="rl" data-i18n="about.org4">full-stack lead · 20K+ daily users</div></div>
+            <div class="org"><div class="nm">Univ. of Haifa</div><div class="rl" data-i18n="about.org5">research software · vision + Unity</div></div>
           </div>
         </div>
       </aside>
@@ -850,66 +927,66 @@
 <section class="section alt" id="engagements">
   <div class="wrap">
     <div class="head">
-      <span class="k eyebrow">how we work</span>
-      <h2>Three ways to engage — pick the entry that fits.</h2>
-      <p class="sec-sub">Each model starts with a technical discussion, not a sales deck. Scope and estimates are grounded in your codebase and hardware, not generic proposals.</p>
+      <span class="k eyebrow" data-i18n="eyebrow.engagements">how we work</span>
+      <h2 data-i18n="eng.h2">Three ways to engage — pick the entry that fits.</h2>
+      <p class="sec-sub" data-i18n="eng.sub">Each model starts with a technical discussion, not a sales deck. Scope and estimates are grounded in your codebase and hardware, not generic proposals.</p>
     </div>
 
     <div class="cards-3">
       <article class="p-card eng-card reveal">
         <div class="eng-meta">
           <div class="p-num"><b>E—01</b></div>
-          <span class="chip">fixed scope · 1–2 weeks</span>
+          <span class="chip" data-i18n="eng.e1.chip">fixed scope · 1–2 weeks</span>
         </div>
-        <h3 class="p-title" style="margin-top:0.2rem;">Architecture &amp; Feasibility Audit</h3>
+        <h3 class="p-title" style="margin-top:0.2rem;" data-i18n="eng.e1.title">Architecture &amp; Feasibility Audit</h3>
         <div class="eng-goal box">
-          <div class="box-k">goal</div>
-          <p>Determine whether a proposed edge-AI, vision, or cloud architecture is viable before you commit significant hardware or hiring budget.</p>
+          <div class="box-k" data-i18n="eng.goal">goal</div>
+          <p data-i18n="eng.e1.goal">Determine whether a proposed edge-AI, vision, or cloud architecture is viable before you commit significant hardware or hiring budget.</p>
         </div>
         <div class="box">
-          <div class="box-k">deliverables</div>
-          <p style="color:var(--ink-dim); font-size:0.92rem;">Detailed technical audit · silicon selection analysis · latency/accuracy profiling on sample data · actionable implementation blueprint.</p>
+          <div class="box-k" data-i18n="eng.deliver">deliverables</div>
+          <p style="color:var(--ink-dim); font-size:0.92rem;" data-i18n="eng.e1.deliver">Detailed technical audit · silicon selection analysis · latency/accuracy profiling on sample data · actionable implementation blueprint.</p>
         </div>
         <div class="eng-cta">
-          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Architecture%20Audit%20%E2%80%94%20HawariTech">Start with an audit call <span class="arr">→</span></a>
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Architecture%20Audit%20%E2%80%94%20HawariTech" data-i18n-mailto="audit"><span data-i18n="eng.e1.cta">Start with an audit call</span> <span class="arr">→</span></a>
         </div>
       </article>
 
       <article class="p-card eng-card reveal">
         <div class="eng-meta">
           <div class="p-num"><b>E—02</b></div>
-          <span class="chip">project-based · 4–8 weeks</span>
+          <span class="chip" data-i18n="eng.e2.chip">project-based · 4–8 weeks</span>
         </div>
-        <h3 class="p-title" style="margin-top:0.2rem;">Prototype &amp; Systems Delivery</h3>
+        <h3 class="p-title" style="margin-top:0.2rem;" data-i18n="eng.e2.title">Prototype &amp; Systems Delivery</h3>
         <div class="eng-goal box">
-          <div class="box-k">goal</div>
-          <p>Build an operational proof of concept, or ship a specific subsystem — a custom inference pipeline, WebRTC streaming engine, or IoT backend.</p>
+          <div class="box-k" data-i18n="eng.goal">goal</div>
+          <p data-i18n="eng.e2.goal">Build an operational proof of concept, or ship a specific subsystem — a custom inference pipeline, WebRTC streaming engine, or IoT backend.</p>
         </div>
         <div class="box">
-          <div class="box-k">deliverables</div>
-          <p style="color:var(--ink-dim); font-size:0.92rem;">Documented, tested C++/Python/cloud codebase · integration tests · deployment scripts · performance benchmarks.</p>
+          <div class="box-k" data-i18n="eng.deliver">deliverables</div>
+          <p style="color:var(--ink-dim); font-size:0.92rem;" data-i18n="eng.e2.deliver">Documented, tested C++/Python/cloud codebase · integration tests · deployment scripts · performance benchmarks.</p>
         </div>
         <div class="eng-cta">
-          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Prototype%20Delivery%20%E2%80%94%20HawariTech">Discuss your subsystem <span class="arr">→</span></a>
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Prototype%20Delivery%20%E2%80%94%20HawariTech" data-i18n-mailto="prototype"><span data-i18n="eng.e2.cta">Discuss your subsystem</span> <span class="arr">→</span></a>
         </div>
       </article>
 
       <article class="p-card eng-card reveal">
         <div class="eng-meta">
           <div class="p-num"><b>E—03</b></div>
-          <span class="chip">retainer · embedded</span>
+          <span class="chip" data-i18n="eng.e3.chip">retainer · embedded</span>
         </div>
-        <h3 class="p-title" style="margin-top:0.2rem;">Fractional Principal Engineer</h3>
+        <h3 class="p-title" style="margin-top:0.2rem;" data-i18n="eng.e3.title">Fractional Principal Engineer</h3>
         <div class="eng-goal box">
-          <div class="box-k">goal</div>
-          <p>Strategic technical leadership and hands-on implementation for teams that lack senior embedded-AI or systems-architecture expertise.</p>
+          <div class="box-k" data-i18n="eng.goal">goal</div>
+          <p data-i18n="eng.e3.goal">Strategic technical leadership and hands-on implementation for teams that lack senior embedded-AI or systems-architecture expertise.</p>
         </div>
         <div class="box">
-          <div class="box-k">deliverables</div>
-          <p style="color:var(--ink-dim); font-size:0.92rem;">System architecture design · sprint-level code contributions · code reviews · technical mentorship for your internal team.</p>
+          <div class="box-k" data-i18n="eng.deliver">deliverables</div>
+          <p style="color:var(--ink-dim); font-size:0.92rem;" data-i18n="eng.e3.deliver">System architecture design · sprint-level code contributions · code reviews · technical mentorship for your internal team.</p>
         </div>
         <div class="eng-cta">
-          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Fractional%20Principal%20%E2%80%94%20HawariTech">Talk about embedding me <span class="arr">→</span></a>
+          <a class="mini-link" href="mailto:basiljhs@gmail.com?subject=Fractional%20Principal%20%E2%80%94%20HawariTech" data-i18n-mailto="fractional"><span data-i18n="eng.e3.cta">Talk about embedding me</span> <span class="arr">→</span></a>
         </div>
       </article>
     </div>
@@ -921,8 +998,8 @@
   <div class="wrap">
     <div class="contact-panel reveal">
       <div>
-        <h2>Bring the hard problem first.</h2>
-        <p class="intro">
+        <h2 data-i18n="contact.h2">Bring the hard problem first.</h2>
+        <p class="intro" data-i18n="contact.intro">
           No intake forms, no account managers, no qualification funnel. If your problem involves real-time
           perception, constrained silicon, or a backend that must not fall over — send the context and the
           constraints, and let's talk architecture.
@@ -930,40 +1007,39 @@
 
         <ul class="methods">
           <li>
-            <span class="m-k">email</span>
+            <span class="m-k" data-i18n="contact.email">email</span>
             <a class="m-a" href="mailto:basiljhs@gmail.com">basiljhs@gmail.com <span class="arr">↗</span></a>
           </li>
           <li>
-            <span class="m-k">calendar</span>
-            <a class="m-a" href="mailto:basiljhs@gmail.com?subject=30-Minute%20Technical%20Discussion%20%E2%80%94%20HawariTech">Schedule a 30-minute technical discussion <span class="arr">↗</span></a>
-            <span class="m-note">Opens a pre-filled email — replace with your Cal.com / Calendly link when live (see README).</span>
+            <span class="m-k" data-i18n="contact.calendar">calendar</span>
+            <a class="m-a" href="mailto:basiljhs@gmail.com?subject=30-Minute%20Technical%20Discussion%20%E2%80%94%20HawariTech" data-i18n-mailto="cal30"><span data-i18n="contact.cal30">Schedule a 30-minute technical discussion</span> <span class="arr">↗</span></a>
           </li>
           <li>
-            <span class="m-k">phone · whatsapp</span>
+            <span class="m-k" data-i18n="contact.phone">phone · whatsapp</span>
             <a class="m-a" href="tel:+972503634193">+972 50-363-4193 <span class="arr">↗</span></a>
           </li>
           <li>
-            <span class="m-k">profile</span>
-            <a class="m-a" href="https://www.linkedin.com/in/basilhawari93706658/" target="_blank" rel="noopener">LinkedIn — basilhawari <span class="arr">↗</span></a>
+            <span class="m-k" data-i18n="contact.profile">profile</span>
+            <a class="m-a" href="https://www.linkedin.com/in/basilhawari93706658/" target="_blank" rel="noopener"><span data-i18n="contact.linkedin">LinkedIn — basilhawari</span> <span class="arr">↗</span></a>
           </li>
         </ul>
       </div>
 
       <div class="contact-side">
         <div>
-          <div class="side-k">logistics</div>
+          <div class="side-k" data-i18n="contact.logistics">logistics</div>
           <ul class="mini-bullets">
-            <li>Based in Haifa, Israel · remote worldwide</li>
-            <li>Working with teams in North America, Europe, and Israel</li>
-            <li>Engagements from 1–2 week audits to embedded retainers</li>
-            <li>NDA-friendly — signed before any architecture detail is shared</li>
+            <li data-i18n="contact.l1">Based in Haifa, Israel · remote worldwide</li>
+            <li data-i18n="contact.l2">Working with teams in North America, Europe, and Israel</li>
+            <li data-i18n="contact.l3">Engagements from 1–2 week audits to embedded retainers</li>
+            <li data-i18n="contact.l4">NDA-friendly — signed before any architecture detail is shared</li>
           </ul>
         </div>
         <div class="scope-card" style="background:var(--card);">
-          <div class="scope-head"><span>handshake_protocol</span><span class="pulse">ready</span></div>
-          <div class="scope-row"><span class="lk">step 1</span><span class="lv">email / call — context + constraints</span></div>
-          <div class="scope-row"><span class="lk">step 2</span><span class="lv">30-min technical discussion</span></div>
-          <div class="scope-row"><span class="lk">step 3</span><span class="lv">technical brief with honest estimates</span></div>
+          <div class="scope-head"><span>handshake_protocol</span><span class="pulse" data-i18n="status.ready">ready</span></div>
+          <div class="scope-row"><span class="lk">step 1</span><span class="lv" data-i18n="contact.s1">email / call — context + constraints</span></div>
+          <div class="scope-row"><span class="lk">step 2</span><span class="lv" data-i18n="contact.s2">30-min technical discussion</span></div>
+          <div class="scope-row"><span class="lk">step 3</span><span class="lv" data-i18n="contact.s3">technical brief with honest estimates</span></div>
           <div class="scope-foot">no_sales_deck_required = true</div>
         </div>
       </div>
@@ -979,32 +1055,478 @@
     <div class="foot-grid">
       <div>
         <h4>HawariTech</h4>
-        <p>Independent software &amp; AI consultancy — edge AI, computer vision, and distributed systems engineering. Founded by Basil Hawari, Haifa, Israel.</p>
+        <p data-i18n="footer.blurb">Independent software &amp; AI consultancy — edge AI, computer vision, and distributed systems engineering. Founded by Basil Hawari, Haifa, Israel.</p>
       </div>
       <div>
-        <h4>Sections</h4>
-        <a href="#practice">Practice areas</a>
-        <a href="#proof">Selected proof</a>
-        <a href="#about">About Basil</a>
-        <a href="#engagements">Engagement models</a>
-        <a href="#contact">Contact</a>
+        <h4 data-i18n="footer.sections">Sections</h4>
+        <a href="#practice" data-i18n="nav.practiceFull">Practice areas</a>
+        <a href="#proof" data-i18n="nav.proofFull">Selected proof</a>
+        <a href="#about" data-i18n="nav.aboutFull">About Basil</a>
+        <a href="#engagements" data-i18n="nav.engFull">Engagement models</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
       </div>
       <div>
-        <h4>Connect</h4>
+        <h4 data-i18n="footer.connect">Connect</h4>
         <a href="mailto:basiljhs@gmail.com">basiljhs@gmail.com</a>
         <a href="tel:+972503634193">+972 50-363-4193</a>
         <a href="https://www.linkedin.com/in/basilhawari93706658/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 HawariTech · all rights reserved</span>
-      <span>static · no trackers · no cookies · loads in milliseconds</span>
+      <span data-i18n="footer.rights">© 2026 HawariTech · all rights reserved</span>
+      <span data-i18n="footer.static">static · no trackers · no cookies · loads in milliseconds</span>
     </div>
   </div>
 </footer>
 
 <script>
-  // Reveal-on-scroll (skipped automatically under prefers-reduced-motion via CSS).
+/* ============================================================
+   HawariTech i18n — EN lives in the markup (no-JS fallback).
+   AR/HE dictionaries below. Switching updates lang, dir, all
+   [data-i18n] nodes, mailto subjects, <title> and meta tags.
+   Choice is remembered in localStorage.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var EMAIL = "basiljhs@gmail.com";
+
+  var SUBJECTS = {
+    en: {
+      schedCall:   "Technical Call — HawariTech",
+      edgeVision:  "Edge Vision Case Study — HawariTech",
+      stm32:       "STM32N6 Prototype Case Study — HawariTech",
+      serverless:  "Serverless Platform Case Study — HawariTech",
+      audit:       "Architecture Audit — HawariTech",
+      prototype:   "Prototype Delivery — HawariTech",
+      fractional:  "Fractional Principal — HawariTech",
+      cal30:       "30-Minute Technical Discussion — HawariTech"
+    },
+    ar: {
+      schedCall:   "مكالمة تقنية — HawariTech",
+      edgeVision:  "دراسة حالة الرؤية الطرفية — HawariTech",
+      stm32:       "دراسة حالة النموذج الأولي STM32N6 — HawariTech",
+      serverless:  "دراسة حالة المنصة الخادمية — HawariTech",
+      audit:       "مراجعة المعمارية — HawariTech",
+      prototype:   "تسليم نموذج أولي — HawariTech",
+      fractional:  "مهندس رئيسي بدوام جزئي — HawariTech",
+      cal30:       "نقاش تقني لمدة 30 دقيقة — HawariTech"
+    },
+    he: {
+      schedCall:   "שיחת ייעוץ טכני — HawariTech",
+      edgeVision:  "מקרה בוחן — ראייה על שפת הקצה — HawariTech",
+      stm32:       "מקרה בוחן — אב-טיפוס STM32N6 — HawariTech",
+      serverless:  "מקרה בוחן — פלטפורמת Serverless — HawariTech",
+      audit:       "ביקורת ארכיטקטורה — HawariTech",
+      prototype:   "מסירת אב-טיפוס — HawariTech",
+      fractional:  "מהנדס ראשי חלקי — HawariTech",
+      cal30:       "שיחת ייעוץ טכני של 30 דקות — HawariTech"
+    }
+  };
+
+  /* ---- translations: only AR and HE (EN is the inline markup) ---- */
+  var T = {
+
+/* ============================ ARABIC ============================ */
+ar: {
+  skip: "تخطَّ إلى المحتوى",
+  "nav.practice": "المجالات",
+  "nav.proof": "الإنجازات",
+  "nav.about": "نبذة",
+  "nav.engagements": "التعاون",
+  "cta.book": "احجز مكالمة تقنية",
+  "menu": "القائمة",
+  "menu.practice": "مجالات العمل",
+  "menu.proof": "أدلة إنجاز مختارة",
+  "menu.about": "نبذة عن باسل",
+  "menu.engagements": "أشكال التعاون",
+  "cta.bookLong": "احجز مكالمة تقنية",
+
+  "hero.eyebrow": "شركة استشارات مستقلة · يديرها المؤسس مباشرة",
+  "hero.title": "الذكاء الاصطناعي الطرفي، والرؤية الحاسوبية، وهندسة <span class=\"accent\">الأنظمة الموزّعة</span>.",
+  "hero.sub": "HawariTech شركة استشارات مستقلة يقودها باسل هاواري. أساعد فرق الهندسة على <strong>تصميم نماذج الإدراك اللحظي وتحسينها ونشرها</strong>، وبناء بنى سحابية قابلة للتوسّع — من الشرائح محدودة الموارد إلى أنظمة الإنتاج الخلفية.",
+  "hero.ctaPrimary": "احجز مكالمة تقنية",
+  "hero.ctaMail": "راسلني مباشرة",
+
+  "status.active": "نشِط",
+  "status.verified": "موثَّق",
+  "status.ready": "جاهز",
+  "scope.role": "مهندس رئيسي — تعاقد مباشر",
+  "scope.layer": "<em>السيليكون ← الحافة ← السحابة</em>",
+  "scope.c1": "تعمل معي مباشرة",
+  "scope.c2": "لا مدراء حسابات",
+  "scope.c3": "لا فرق خارجية أو طبقات تسليم وسيطة",
+
+  "snap.focus": "التركيز",
+  "snap.focusVal": "<strong>Edge AI</strong> · <strong>Computer Vision</strong> · المتحكمات/المعالجات الدقيقة · <strong>AWS Cloud</strong>",
+  "snap.silicon": "الشرائح المستهدفة",
+  "snap.siliconVal": "NVIDIA Jetson · STM32N6 · معماريات ARM",
+  "snap.location": "الموقع",
+  "snap.locationVal": "عن بُعد حول العالم · مقرّي حيفا، إسرائيل",
+
+  "metric1": "عامًا من شحن أنظمة الإنتاج عبر كامل الحزمة التقنية",
+  "metric2": "خفض زمن الاستدلال بأكثر من 90% في نشر أمان على Jetson",
+  "metric3": "مستخدم يومي على منصات صُمّمت ووُسّع نطاقها",
+  "metric4": "توافر بنية تحتية حرجة كانت تحت إدارتي",
+
+  "eyebrow.practice": "مجالات العمل",
+  "practice.h2": "أصنّف العمل حسب المشكلة التقنية التي تحاول حلّها.",
+  "practice.sub": "ليست قائمة تقنيات جافة — بل ثلاثة مجالات مشكلات تتصادم فيها دقة النماذج وقيود العتاد وميزانيات زمن الاستجابة مع النشر الحقيقي.",
+  "practice.problem": "⚠ المشكلة",
+  "practice.p1.title": "نشر الذكاء الاصطناعي الطرفي والرؤية الحاسوبية",
+  "practice.p1.problem": "النماذج التي تعمل بلغة بايثون على وحدات معالجة رسومية عالية المواصفات تفشل عند النشر تحت القيود الفيزيائية — الاختناق الحراري، وميزانيات زمن الاستجابة الصارمة، وحدود الذاكرة.",
+  "practice.p1.d1": "محرّكات استدلال مخصّصة بلغة C++ فوق TensorRT وONNX Runtime وCUDA.",
+  "practice.p1.d2": "تحسين النماذج وكمّتها (quantization) وتقليمها للتنفيذ اللحظي على الأجهزة الطرفية.",
+  "practice.p1.d3": "دمج الرؤية الحاسوبية التقليدية (OpenCV، الهندسة المتجانبة، الهندسة متعددة الكاميرات، التدفق البصري) مع الشبكات العصبية العميقة للتتبّع والتقطيع.",
+  "practice.p1.d4": "التكامل على منصات تتراوح من NVIDIA Jetson إلى وحدات معالجة عصبية من الجيل الجديد مثل STM32N6.",
+  "practice.p2.title": "معمارية الوسائط اللحظية وإنترنت الأشياء",
+  "practice.p2.problem": "يجب أن تبثّ أجهزة الحافة الفيديو وتُبلّغ عن حالتها وتستقبل الأوامر دون فقدان الإطارات أو إدخال زمن استجابة غير مقبول.",
+  "practice.p2.d1": "خطوط بث فيديو بزمن استجابة فائق الانخفاض عبر WebRTC وGStreamer وC++.",
+  "practice.p2.d2": "أنظمة خلفية موثوقة للقياس عن بُعد والأوامر والتحكم عبر AWS IoT Core وMQTT.",
+  "practice.p2.d3": "مزامنة الحافة مع السحابة لالتقاط البيانات الاصطناعية آليًا، وتسجيل المقاييس، ومراقبة النماذج.",
+  "practice.p3.title": "النمذجة الأولية للنظام الكامل وتحصينه للإنتاج",
+  "practice.p3.problem": "تحتاج الشركات الناشئة ومجموعات البحث والتطوير غالبًا إلى نظام عامل متكامل للتحقق من فكرة منتج أو لفتح الطريق أمام خارطة طريق عتادية.",
+  "practice.p3.d1": "نمذجة أولية سريعة للبرمجيات على شرائح ما قبل الإصدار الرسمي ومنصات عتاد مخصصة.",
+  "practice.p3.d2": "دمج محركات الرؤية الحاسوبية في تطبيقات الجوال الأصلية — iOS وAndroid والأجهزة القابلة للارتداء.",
+  "practice.p3.d3": "أنظمة خلفية سحابية لاختبارية (Lambda وAppSync وDynamoDB من AWS) بحجم يحقق تكلفة متوقعة وصيانة شبه معدومة.",
+
+  "eyebrow.proof": "أدلة إنجاز مختارة",
+  "proof.h2": "نتائج يعتمد عليها المهندسون — لا ادعاءات تسويقية.",
+  "proof.sub": "ملخصات منظمة: المشكلة ثم الإجراء ثم النتيجة. ما يتجاوز حدود اتفاقيات السرية (NDA) نشاركه في مكالمة تقنية.",
+  "proof.kContext": "◈ السياق",
+  "proof.kImpl": "⚒ التنفيذ",
+  "proof.kOutcome": "✓ النتيجة",
+  "proof.discuss": "ناقش هذا المشروع تحت اتفاقية سرية",
+  "proof.p1.name": "رؤية السلامة اللحظية على الحافة",
+  "proof.p1.co": "Coral Smart Pools — قائد R&D للذكاء الاصطناعي الطرفي",
+  "proof.p1.context": "نظام تجاري لسلامة حمامات السباحة يتطلب كشفًا متواصلًا للأشخاص بزمن أقل من ثانية ضمن ميزانية حرارية ثابتة.",
+  "proof.p1.impl": "استُبدل كود الاستدلال القياسي بخط أنابيب C++ مخصّص على NVIDIA Jetson باستخدام TensorRT وتحسينات ResNet مخصصة، مع بناء تدفق فيديو منخفض زمن الاستجابة عبر WebRTC.",
+  "proof.p1.outcome": "<strong>خُفّض زمن الاستدلال بأكثر من 90%</strong> مع العمل ضمن حدود حرارية ثابتة.",
+  "proof.p2.name": "نموذج أولي مبكّر لمعالج NPU طرفي",
+  "proof.p2.co": "STMicroelectronics STM32N6 — برنامج شرائح ما قبل الإصدار",
+  "proof.p2.context": "تكامل مع شرائح ما قبل الإصدار الرسمي لعتاد طرفي من الجيل الجديد، قبل توفر الأدوات العامة والشرائح.",
+  "proof.p2.impl": "بُنيت طبقات البرامج الثابتة والبرمجيات لتستهدف معالج STM32N6 Neural-ART NPU، مع تقييم مقايضات الدقة على النماذج المكمّتة مقابل ميزانية الحوسبة على الرقاقة.",
+  "proof.p2.outcome": "<strong>سُلّم نموذج أولي عامل قبل توفر الشرائح رسميًا</strong>، ما أثبت جدوى خطوط منتجات عتاد منخفضة التكلفة.",
+  "proof.p3.name": "منصة لاختبارية قابلة للتوسّع",
+  "proof.p3.co": "FIGZI — مؤسس مشارك وقائد تقني من النهاية إلى النهاية",
+  "proof.p3.context": "منصة جوالة قائمة على الأحداث مع استعلامات موقع عالية التزامن منذ اليوم الأول.",
+  "proof.p3.impl": "بُني نظام خلفي قائم على الأحداث على AWS — AppSync (GraphQL) وLambda وAmplify — مع عميل Flutter.",
+  "proof.p3.outcome": "<strong>دعم أكثر من 10,000 مستخدم في السنة الأولى</strong> مع حد أدنى من البنية التحتية و<strong>صفر موظفين مخصصين للعمليات</strong>.",
+
+  "eyebrow.about": "نبذة عن باسل هاواري",
+  "about.h2": "مهندس رئيسي تعمل معه مباشرة.",
+  "about.lede": "أنا مهندس برمجيات وذكاء اصطناعي بمستوى Principal، بخبرة تزيد على <span class=\"accent\">15 عامًا</span> في تصميم الأنظمة وشحنها عبر كامل الحزمة التقنية — تحسين على مستوى الشرائح، وخدمات C++ منخفضة زمن الاستجابة، وبنى سحابية إنتاجية، وتطبيقات جوال.",
+  "about.p1": "قبل تأسيس HawariTech، قدت مبادرات بحث وتطوير لعتاد ذكاء اصطناعي طرفي <strong>حرج السلامة</strong> (أنظمة أمان تجارية لحمامات السباحة على NVIDIA Jetson)، وبنيت <strong>برمجيات تحكم روبوتية وإنترنت أشياء بلغة C++</strong> متكاملة مع AWS IoT وMQTT، و<strong>أسست بالشراكة شركة ناشئة مدعومة برأس مال مغامر</strong>، معماريًا نظامها الخلفي اللاخادمي من الصفر. وقبل ذلك، قدت تحوّل DevOps نقل منصة حرجة من إصدار أسبوعي إلى إصدارات يومية متعددة مع توافر 99.9%، ووسّعت نظام إدارة تعلّم لخدمة أكثر من 20,000 مستخدم يوميًا.",
+  "about.p2": "تمتد هذه المسيرة عبر <strong>كل طبقات طيف الحوسبة</strong> — من شبكة عصبية مكمّتة لمعالج من فئة ARM Cortex-M، عبر عقد Jetson الطرفية التي تشغّل استدلالًا محسّنًا، إلى أنظمة خلفية سحابية قائمة على الأحداث تدير الأسطول. قلة من شركات الاستشارات تستطيع التصميم عبر هذا الطيف كاملًا، لأن قلةً بَنَت فعلًا في كل طبقة.",
+  "about.guarantee": "<strong>عندما تتعاقد مع HawariTech، تعمل معي مباشرة.</strong> لا مدراء حسابات، ولا مطورون مبتدئون من جهات خارجية، ولا طبقات تسليم وسيطة. أنا من يكتب المعمارية، ويحلّل الاختناقات، ويُسلّم كود الإنتاج.",
+  "cred.title": "مهندس برمجيات وذكاء اصطناعي رئيسي",
+  "cred.since": "أكثر من 15 عامًا في شحن أنظمة الإنتاج",
+  "cred.origin": "عن بُعد حول العالم · حيفا، إسرائيل",
+  "cred.engagement": "مباشرة مع المؤسس — بلا وساطة",
+  "about.orgsK": "أين بُنيت هذه الخبرة",
+  "about.org1": "قائد R&D للذكاء الاصطناعي الطرفي · Jetson + STM32N6",
+  "about.org2": "مؤسس مشارك · AWS لاختبارية من الصفر",
+  "about.org3": "قائد DevOps · CI/CD · توافر 99.9%",
+  "about.org4": "قائد الحزمة الكاملة · 20K+ مستخدم يومي",
+  "about.org5": "برمجيات بحثية · رؤية حاسوبية + Unity",
+
+  "eyebrow.engagements": "كيف نعمل",
+  "eng.h2": "ثلاث طرق للتعاون — اختر نقطة الدخول المناسبة.",
+  "eng.sub": "كل نموذج يبدأ بنقاش تقني لا بعرض مبيعات. النطاق والتقديرات مبنية على كودك وعتادك، لا على عروض عامة.",
+  "eng.goal": "الهدف",
+  "eng.deliver": "المخرجات",
+  "eng.e1.chip": "نطاق ثابت · أسبوع إلى أسبوعين",
+  "eng.e1.title": "مراجعة المعمارية والجدوى",
+  "eng.e1.goal": "تحديد ما إذا كانت معمارية الذكاء الاصطناعي الطرفي أو الرؤية أو السحابة المقترحة قابلة للتنفيذ قبل الالتزام بميزانية عتاد أو توظيف كبيرة.",
+  "eng.e1.deliver": "مراجعة تقنية مفصّلة · تحليل اختيار الشرائح · قياس زمن الاستجابة والدقة على بيانات عينة · مخطط تنفيذ عملي.",
+  "eng.e1.cta": "ابدأ بمكالمة مراجعة",
+  "eng.e2.chip": "مشروع · 4–8 أسابيع",
+  "eng.e2.title": "النمذجة الأولية وتسليم الأنظمة",
+  "eng.e2.goal": "بناء إثبات مفهوم عامل، أو تسليم نظام فرعي محدد — خط أنابيب استدلال مخصص، أو محرك بث WebRTC، أو نظام خلفي لإنترنت الأشياء.",
+  "eng.e2.deliver": "قاعدة كود موثقة ومختبرة بلغة C++/Python/السحابة · اختبارات تكامل · نصوص نشر · معايير أداء.",
+  "eng.e2.cta": "ناقش نظامك الفرعي",
+  "eng.e3.chip": "عقد شهري · اندماج مع الفريق",
+  "eng.e3.title": "مهندس رئيسي بدوام جزئي (Fractional)",
+  "eng.e3.goal": "قيادة تقنية استراتيجية مع تنفيذ عملي للفرق التي تفتقر إلى خبرة الذكاء الاصطناعي الطرفي أو معمارية الأنظمة.",
+  "eng.e3.deliver": "تصميم معمارية النظام · مساهمات كود ضمن السبرنتات · مراجعات الكود · إرشاد تقني لفريقك الداخلي.",
+  "eng.e3.cta": "تحدث عن دمجي مع الفريق",
+
+  "contact.h2": "قدّم المشكلة الصعبة أولًا.",
+  "contact.intro": "لا نماذج تسجيل، لا مدراء حسابات، لا مسار تأهيل. إن كانت مشكلتك تتعلق بالإدراك اللحظي أو الشرائح المقيّدة أو نظام خلفي لا يجوز أن يسقط — أرسل السياق والقيود ولنتحدث في المعمارية.",
+  "contact.email": "البريد الإلكتروني",
+  "contact.calendar": "الموعد",
+  "contact.cal30": "احجز نقاشًا تقنيًا لمدة 30 دقيقة",
+  "contact.phone": "الهاتف · واتساب",
+  "contact.profile": "الملف الشخصي",
+  "contact.linkedin": "LinkedIn — basilhawari",
+  "contact.logistics": "تفاصيل لوجستية",
+  "contact.l1": "مقرّي حيفا، إسرائيل · أعمل عن بُعد حول العالم",
+  "contact.l2": "أعمل مع فرق في أمريكا الشمالية وأوروبا وإسرائيل",
+  "contact.l3": "تعاقدات تبدأ من مراجعات 1–2 أسبوع حتى عقود اندماج شهرية",
+  "contact.l4": "مراعاة اتفاقيات السرية — تُوقَّع قبل مشاركة أي تفاصيل معمارية",
+  "contact.s1": "بريد / مكالمة — السياق والقيود",
+  "contact.s2": "نقاش تقني لمدة 30 دقيقة",
+  "contact.s3": "موجز تقني بتقديرات صادقة",
+
+  "footer.blurb": "شركة استشارات برمجيات وذكاء اصطناعي مستقلة — هندسة الذكاء الاصطناعي الطرفي والرؤية الحاسوبية والأنظمة الموزّعة. أسّسها باسل هاواري، حيفا، إسرائيل.",
+  "footer.sections": "الأقسام",
+  "nav.practiceFull": "مجالات العمل",
+  "nav.proofFull": "أدلة إنجاز مختارة",
+  "nav.aboutFull": "نبذة عن باسل",
+  "nav.engFull": "أشكال التعاون",
+  "nav.contact": "التواصل",
+  "footer.connect": "تواصل",
+  "footer.rights": "© 2026 HawariTech · جميع الحقوق محفوظة",
+  "footer.static": "صفحة ثابتة · بلا متتبعات · بلا ملفات تعريف · تُحمَّل في أجزاء من الثانية",
+
+  meta: {
+    title: "HawariTech — هندسة الذكاء الاصطناعي الطرفي والرؤية الحاسوبية والأنظمة الموزّعة",
+    description: "HawariTech شركة استشارات مستقلة يقودها باسل هاواري، مهندس برمجيات وذكاء اصطناعي رئيسي. نصمّم ونحسّن وننشر نماذج إدراك لحظي وبنى سحابية قابلة للتوسّع — من شرائح NVIDIA Jetson وSTM32N6 إلى أنظمة الإنتاج الخلفية."
+  }
+},
+
+/* ============================ HEBREW ============================ */
+he: {
+  skip: "דילוג לתוכן",
+  "nav.practice": "תחומים",
+  "nav.proof": "הוכחות",
+  "nav.about": "אודות",
+  "nav.engagements": "התקשרות",
+  "cta.book": "קבע שיחת ייעוץ טכני",
+  "menu": "תפריט",
+  "menu.practice": "תחומי העבודה",
+  "menu.proof": "הוכחות נבחרות",
+  "menu.about": "אודות באסל",
+  "menu.engagements": "מודלי התקשרות",
+  "cta.bookLong": "קבע שיחת ייעוץ טכני",
+
+  "hero.eyebrow": "ייעוץ עצמאי · בהובלת המהנדס הראשי עצמו",
+  "hero.title": "בינה מלאכותית על שפת הקצה, ראייה ממוחשבת והנדסת <span class=\"accent\">מערכות מבוזרות</span>.",
+  "hero.sub": "HawariTech היא חברת ייעוץ עצמאית בניהולו של באסל הווארי. אני מסייע לצוותי הנדסה <strong>לתכנן, לבצע אופטימיזציה ולפרוס</strong> מודלי תפיסה בזמן אמת ולבנות ארכיטקטורות ענן סקלביליות — משבבים מוגבלי משאבים ועד מערכות ייצור אחוריות (Backend).",
+  "hero.ctaPrimary": "קבע שיחת ייעוץ טכני",
+  "hero.ctaMail": "שלחו לי מייל ישירות",
+
+  "status.active": "פעיל",
+  "status.verified": "מאומת",
+  "status.ready": "מוכן",
+  "scope.role": "מהנדס ראשי — התקשרות ישירה",
+  "scope.layer": "<em>סיליקון ← קצה ← ענן</em>",
+  "scope.c1": "עובדים ישירות איתי",
+  "scope.c2": "בלי מנהלי חשבונות",
+  "scope.c3": "בלי קבלני משנה או שכבות ממסרות",
+
+  "snap.focus": "התמקדות",
+  "snap.focusVal": "<strong>Edge AI</strong> · <strong>Computer Vision</strong> · מיקרו-בקרים/מעבדים משובצים · <strong>AWS Cloud</strong>",
+  "snap.silicon": "סיליקון מטרה",
+  "snap.siliconVal": "NVIDIA Jetson · STM32N6 · ארכיטקטורות ARM",
+  "snap.location": "מיקום",
+  "snap.locationVal": "מרחוק מכל העולם · מבוסס בחיפה, ישראל",
+
+  "metric1": "שנים של מסירת מערכות ייצור על פני כל המחסנית",
+  "metric2": "הפחתה של מעל 90% בזמן ה-inference בפריסת בטיחות על Jetson",
+  "metric3": "משתמשים יומיים בפלטפורמות שתכננתי והרחבתי",
+  "metric4": "זמינות תשתית קריטית שהייתה בניהולי",
+
+  "eyebrow.practice": "תחומי העבודה",
+  "practice.h2": "אני מקבץ עבודה לפי הבעיה הטכנית שאתם מנסים לפתור.",
+  "practice.sub": "לא רשימה יבשה של טכנולוגיות — אלא שלושה מרחבי בעיות שבהם דיוק המודל, מגבלות החומרה ותקציבי השהיה פוגשים פריסות אמיתיות.",
+  "practice.problem": "⚠ הבעיה",
+  "practice.p1.title": "פריסת Edge AI וראייה ממוחשבת",
+  "practice.p1.problem": "מודלים שרצים בפייתון על GPUs מתקדמים נכשלים בתנאי פריסה פיזיים — הגבלת הספק תרמית (thermal throttling), תקציבי שהייה נוקשים ומגבלות זיכרון.",
+  "practice.p1.d1": "מנועי inference מותאמים ב-C++ על גבי TensorRT, ONNX Runtime ו-CUDA.",
+  "practice.p1.d2": "אופטימיזציה, קוונטיזציה (quantization) וגיזום מודלים לביצוע בזמן אמת על שפת הקצה.",
+  "practice.p1.d3": "שילוב ראייה ממוחשבת קלאסית (OpenCV, הומוגרפיה, גיאומטריה מרובת מצלמות, זרימה אופטית) עם רשתות עצביות עמוקות למעקב ולסגמנטציה.",
+  "practice.p1.d4": "אינטגרציה על פלטפורמות מ-NVIDIA Jetson ועד יחידות עיבוד עצביות מהדור הבא כמו ה-STM32N6.",
+  "practice.p2.title": "ארכיטקטורת מדיה בזמן אמת ו-IoT",
+  "practice.p2.problem": "התקני קצה חייבים להזרים וידאו, לדווח סטטוס ולקבל פקודות בלי לאבד פריימים ובלי להוסיף השהיה בלתי מתקבלת על הדעת.",
+  "practice.p2.d1": "צינורות הזרמת וידאו בהשהיה נמוכה במיוחד עם WebRTC, GStreamer ו-C++.",
+  "practice.p2.d2": "מערכות אחוריות אמינות לטיולומטריה, פקודות ובקרה (C2) דרך AWS IoT Core ו-MQTT.",
+  "practice.p2.d3": "סנכרון קצה-ענן ללכידת נתונים סינתטיים אוטומטית, רישום מדדים וניטור מודלים.",
+  "practice.p3.title": "אב-טיפוס מערכת מלא והקשחה לייצור",
+  "practice.p3.problem": "סטארטאפים וקבוצות מו\"פ זקוקים לרוב למערכת שלמה ועובדת כדי לאמת רעיון מוצר או לפתוח את הדרך ל-roadmap חומרה.",
+  "practice.p3.d1": "אב-טיפוס תוכנה מהיר על סיליקון טרום-השקה ועל מתקני חומרה מותאמים.",
+  "practice.p3.d2": "שילוב מנועי ראייה ממוחשבת באפליקציות מובייל ילידיות — iOS, Android ומכשירים לבישים.",
+  "practice.p3.d3": "מערכות אחוריות Serverless בענן (Lambda, AppSync, DynamoDB של AWS) בקנה מידה שמבטיח עלות צפויה ותחזוקה כמעט אפסית.",
+
+  "eyebrow.proof": "הוכחות נבחרות",
+  "proof.h2": "תוצאות שמהנדסים מתגייסים לפיהן — לא הבטחות שיווק.",
+  "proof.sub": "סיכומים מובנים: בעיה → פעולה → תוצאה. פרטים מעבר למותר במסגרת NDA נחשפים בשיחת ייעוץ.",
+  "proof.kContext": "◈ הקשר",
+  "proof.kImpl": "⚒ יישום",
+  "proof.kOutcome": "✓ תוצאה",
+  "proof.discuss": "לדון בפרויקט תחת NDA",
+  "proof.p1.name": "ראיית בטיחות בזמן אמת על שפת הקצה",
+  "proof.p1.co": "Coral Smart Pools — מוביל מו\"פ Edge AI",
+  "proof.p1.context": "מערכת בטיחות מסחרית לבריכות שחייה הדורשת זיהוי רציף של אדם בזמן תת-שנייה במסגרת תקציב תרמי קבוע.",
+  "proof.p1.impl": "החלפת קוד הזיהוי הסטנדרטי ב-pipeline C++ ייעודי על NVIDIA Jetson עם TensorRT ואופטימיזציות ResNet מותאמות, כולל הזרמת וידאו בהשהיה נמוכה דרך WebRTC.",
+  "proof.p1.outcome": "<strong>השהיית ה-inference ירדה ביותר מ-90%</strong> תוך פעולה במסגרת מגבלות תרמיות קבועות.",
+  "proof.p2.name": "אב-טיפוס חלוץ ל-NPU על שפת הקצה",
+  "proof.p2.co": "STMicroelectronics STM32N6 — תוכנית סיליקון טרום-השקה",
+  "proof.p2.context": "אינטגרציה עם סיליקון טרום-השקה לחומרת קצה מהדור הבא, לפני שכלים ציבוריים וזמינות השבב.",
+  "proof.p2.impl": "תכנון שכבות קושחה ותוכנה המכוונות ל-Neural-ART NPU של ה-STM32N6, עם הערכת trade-offs של דיוק מול תקציב החישוב על-גבי השבב.",
+  "proof.p2.outcome": "<strong>מסירה של אב-טיפוס פעיל לפני זמינות השבב הרשמית</strong>, שהוכיח כדאיות לקווי מוצרי חומרה זולים.",
+  "proof.p3.name": "פלטפורמת Serverless סקלבילית",
+  "proof.p3.co": "FIGZI — מייסד שותף ומוביל טכני מקצה לקצה",
+  "proof.p3.context": "פלטפורמת מובייל מונעת אירועים עם שאילתות מיקום בעומס גבוה מהיום הראשון.",
+  "proof.p3.impl": "מערכת אחורית מונעת אירועים על AWS — AppSync (GraphQL), Lambda ו-Amplify — עם לקוח Flutter.",
+  "proof.p3.outcome": "<strong>תמיכה ביותר מ-10,000 משתמשים בשנה הראשונה</strong> עם תשתית מזערית ו<strong>אפס אנשי DevOps ייעודיים</strong>.",
+
+  "eyebrow.about": "אודות באסל הווארי",
+  "about.h2": "מהנדס ראשי שעובדים איתו ישירות.",
+  "about.lede": "אני מהנדס תוכנה ובינה מלאכותית ברמת Principal עם <span class=\"accent\">יותר מ-15 שנים</span> בתכנון ומסירה של מערכות על פני כל המחסנית — אופטימיזציה ברמת השבב, שירותי C++ עם השהיה נמוכה, תשתיות ענן בייצור ואפליקציות מובייל.",
+  "about.p1": "לפני הקמת HawariTech ניהלתי יוזמות מו\"פ לחומרת Edge AI <strong>קריטית לבטיחות</strong> (מערכות בטיחות מסחריות לבריכות על NVIDIA Jetson), בניתי <strong>תוכנת בקרה רובוטית ו-IoT ב-C++</strong> המשולבת עם AWS IoT ו-MQTT, ו<strong>ייסדתי בשותפות סטארטאפ מגובה הון סיכון</strong>, כשבניתי את המערכת האחורית ה-Serverless שלו מאפס. קודם לכן הובלתי מהפך DevOps שהעביר פלטפורמה קריטית מהשקה שבועית למספר השקות יומיות עם זמינות 99.9%, והרחבתי מערכת LMS ליותר מ-20,000 משתמשים יומיים.",
+  "about.p2": "הקריירה הזו משתרעת על <strong>כל שכבות רצף המחשוב</strong> — מרשת עצבית מקוונטטת ל-NPU מסוג ARM Cortex-M, דרך צמתי קצה של Jetson שמריצים inference מותאם, ועד מערכות ענן אחוריות מונעות אירועים שמנהלות את הצי. מעט חברות ייעוץ יכולות לתכנן על פני כל הרצף הזה, כי מעטים בנו בפועל בכל שכבה.",
+  "about.guarantee": "<strong>כשאתם שוכרים את HawariTech, אתם עובדים ישירות איתי.</strong> אין מנהלי חשבונות, אין מפתחים זוטרים מחוץ לחברה ואין שכבות ממסרות. אני כותב את הארכיטקטורה, מאתר את צווארי הבקבוק ומספק את קוד הייצור.",
+  "cred.title": "מהנדס תוכנה ובינה מלאכותית ראשי",
+  "cred.since": "יותר מ-15 שנים במסירת מערכות ייצור",
+  "cred.origin": "מרחוק מכל העולם · חיפה, ישראל",
+  "cred.engagement": "ישירות מול המהנדס הראשי — ללא מתווכים",
+  "about.orgsK": "היכן נבנתה החוויה הזו",
+  "about.org1": "מוביל מו\"פ Edge AI · Jetson + STM32N6",
+  "about.org2": "מייסד שותף · AWS Serverless מאפס",
+  "about.org3": "מוביל DevOps · CI/CD · זמינות 99.9%",
+  "about.org4": "מוביל פול-סטאק · 20K+ משתמשים יומיים",
+  "about.org5": "תוכנת מחקר · ראייה ממוחשבת + Unity",
+
+  "eyebrow.engagements": "איך אנחנו עובדים",
+  "eng.h2": "שלוש דרכי התקשרות — בחרו את נקודת הכניסה שמתאימה.",
+  "eng.sub": "כל מודל מתחיל בשיחת ייעוץ טכנית, לא במצגת מכירות. ההיקף וההערכות נשענים על הקוד והחומרה שלכם, לא על הצעות גנריות.",
+  "eng.goal": "מטרה",
+  "eng.deliver": "תוצרים",
+  "eng.e1.chip": "היקף קבוע · 1–2 שבועות",
+  "eng.e1.title": "ביקורת ארכיטקטורה וכדאיות",
+  "eng.e1.goal": "לקבוע האם ארכיטקטורת ה-Edge AI, הראייה או הענן המוצעת ישימה לפני התחייבות לתקציב חומרה או גיוס משמעותי.",
+  "eng.e1.deliver": "ביקורת טכנית מפורטת · ניתוח בחירת סיליקון · פרופיל השהיה/דיוק על נתונים לדוגמה · תוכנית יישום מעשית.",
+  "eng.e1.cta": "התחילו בשיחת ביקורת",
+  "eng.e2.chip": "פרויקט · 4–8 שבועות",
+  "eng.e2.title": "אב-טיפוס ומסירת מערכות",
+  "eng.e2.goal": "לבנות הוכחת היתכנות פעילה, או לספק תת-מערכת ספציפית — pipeline inference מותאם, מנוע הזרמת WebRTC או מערכת אחורית ל-IoT.",
+  "eng.e2.deliver": "קוד מתועד ונבדק ב-C++/Python/ענן · בדיקות אינטגרציה · סקריפטי פריסה · אמות מידה לביצועים.",
+  "eng.e2.cta": "לדון בתת-המערכת שלכם",
+  "eng.e3.chip": "רשתית · הטמעה בצוות",
+  "eng.e3.title": "מהנדס ראשי חלקי (Fractional)",
+  "eng.e3.goal": "מנהיגות טכנית אסטרטגית עם יישום מעשי, לצוותים שחסרה להם מומחיות Edge AI או ארכיטקטורת מערכות בכירה.",
+  "eng.e3.deliver": "עיצוב ארכיטקטורת המערכת · תרומות קוד ברמת ספרינט · ביקורות קוד · חונכות טכנית לצוות הפנימי שלכם.",
+  "eng.e3.cta": "לדבר על הטמעה בצוות",
+
+  "contact.h2": "תביאו קודם את הבעיה הקשה.",
+  "contact.intro": "בלי טפסי פנייה, בלי מנהלי חשבונות, בלי משפך מיון. אם הבעיה שלכם קשורה לתפיסה בזמן אמת, לסיליקון מוגבל או למערכת אחורית שאסור לה לקרוס — שלחו את ההקשר והאילוצים, ובואו נדבר ארכיטקטורה.",
+  "contact.email": "אימייל",
+  "contact.calendar": "יומן",
+  "contact.cal30": "קבעו שיחת ייעוץ טכני של 30 דקות",
+  "contact.phone": "טלפון · וואטסאפ",
+  "contact.profile": "פרופיל",
+  "contact.linkedin": "LinkedIn — basilhawari",
+  "contact.logistics": "לוגיסטיקה",
+  "contact.l1": "מבוסס בחיפה, ישראל · מרחוק מכל העולם",
+  "contact.l2": "עובד עם צוותים בצפון אמריקה, אירופה וישראל",
+  "contact.l3": "התקשרויות מביקורות של 1–2 שבועות ועד רשתיות הטמעה",
+  "contact.l4": "ידידותי ל-NDA — נחתם לפני שיתוף כל פרט ארכיטקטוני",
+  "contact.s1": "אימייל / שיחה — הקשר והאילוצים",
+  "contact.s2": "שיחת ייעוץ טכני של 30 דקות",
+  "contact.s3": "תקציר טכני עם הערכות כנות",
+
+  "footer.blurb": "ייעוץ תוכנה ובינה מלאכותית עצמאי — הנדסת Edge AI, ראייה ממוחשבת ומערכות מבוזרות. נוסד על ידי באסל הווארי, חיפה, ישראל.",
+  "footer.sections": "מדורים",
+  "nav.practiceFull": "תחומי העבודה",
+  "nav.proofFull": "הוכחות נבחרות",
+  "nav.aboutFull": "אודות באסל",
+  "nav.engFull": "מודלי התקשרות",
+  "nav.contact": "יצירת קשר",
+  "footer.connect": "יצירת קשר",
+  "footer.rights": "© 2026 HawariTech · כל הזכויות שמורות",
+  "footer.static": "אתר סטטי · ללא מעקב · ללא עוגיות · נטען באלפיות השנייה",
+
+  meta: {
+    title: "HawariTech — הנדסת Edge AI, ראייה ממוחשבת ומערכות מבוזרות",
+    description: "HawariTech היא חברת ייעוץ עצמאית בניהולו של באסל הווארי, מהנדס תוכנה ובינה מלאכותית ראשי. אנו מתכננים, מבצעים אופטימיזציה ופורסים מודלי תפיסה בזמן אמת וארכיטקטורות ענן — משבבי NVIDIA Jetson ו-STM32N6 ועד מערכות ייצור אחוריות."
+  }
+}
+  };
+
+  /* ---- elements & originals (EN inline markup) ---- */
+  var root  = document.documentElement;
+  var nodes = [].slice.call(document.querySelectorAll("[data-i18n]"));
+  var mail  = [].slice.call(document.querySelectorAll("[data-i18n-mailto]"));
+
+  /* capture the original English content once, before any switch */
+  var origText = {};
+  nodes.forEach(function (el) { origText[el.getAttribute("data-i18n")] = el.innerHTML; });
+  var origMail = {};
+  mail.forEach(function (a) { origMail[a.getAttribute("data-i18n-mailto")] = a.getAttribute("href"); });
+  var metaTitle = document.title;
+  var metaDesc  = (document.querySelector('meta[name="description"]') || {}).content || "";
+  var ogTitle   = (document.querySelector('meta[property="og:title"]') || {}).content || "";
+  var ogDesc    = (document.querySelector('meta[property="og:description"]') || {}).content || "";
+  var mdEl  = document.querySelector('meta[name="description"]');
+  var ogTEl = document.querySelector('meta[property="og:title"]');
+  var ogDEl = document.querySelector('meta[property="og:description"]');
+
+  var apply = function (lang) {
+    if (lang !== "ar" && lang !== "he") lang = "en";
+
+    var dict = T[lang] || null;
+    var subj = SUBJECTS[lang] || SUBJECTS.en;
+
+    /* language + direction + fonts */
+    root.lang = lang === "en" ? "en" : lang;
+    root.dir  = lang === "en" ? "ltr" : "rtl";
+
+    if (lang === "en") {
+      /* restore the original inline English */
+      nodes.forEach(function (el) { el.innerHTML = origText[el.getAttribute("data-i18n")]; });
+      mail.forEach(function (a) { a.setAttribute("href", origMail[a.getAttribute("data-i18n-mailto")]); });
+      document.title = metaTitle;
+      if (mdEl)  mdEl.setAttribute("content", metaDesc);
+      if (ogTEl) ogTEl.setAttribute("content", ogTitle);
+      if (ogDEl) ogDEl.setAttribute("content", ogDesc);
+    } else {
+      /* translated content */
+      nodes.forEach(function (el) {
+        var k = el.getAttribute("data-i18n");
+        if (dict.hasOwnProperty(k)) el.innerHTML = dict[k];
+      });
+      mail.forEach(function (a) {
+        var k = a.getAttribute("data-i18n-mailto");
+        a.setAttribute("href", "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subj[k] || SUBJECTS.en[k] || ""));
+      });
+      if (dict.meta) {
+        document.title = dict.meta.title;
+        if (mdEl)  mdEl.setAttribute("content", dict.meta.description);
+        if (ogTEl) ogTEl.setAttribute("content", dict.meta.title);
+        if (ogDEl) ogDEl.setAttribute("content", dict.meta.description);
+      }
+    }
+
+    /* switcher active state */
+    var btns = document.querySelectorAll(".ls-btn");
+    [].forEach.call(btns, function (b) {
+      b.classList.toggle("active", b.getAttribute("data-lang") === lang);
+    });
+
+    /* persist (ignore when running from file:// if storage throws) */
+    try { localStorage.setItem("ht.lang", lang); } catch (e) {}
+  };
+
+  /* initial language: saved choice → browser preference → English */
+  var start = "en";
+  try {
+    var saved = localStorage.getItem("ht.lang");
+    if (saved === "ar" || saved === "he" || saved === "en") start = saved;
+  } catch (e) {}
+  if (start === "en") {
+    var nav = (navigator.language || "en").toLowerCase();
+    if (nav.indexOf("he") === 0) start = "he";
+    else if (nav.indexOf("ar") === 0) start = "ar";
+  }
+  apply(start);
+
+  /* switcher */
+  [].forEach.call(document.querySelectorAll(".ls-btn"), function (b) {
+    b.addEventListener("click", function () { apply(b.getAttribute("data-lang")); });
+  });
+
+  /* reveal-on-scroll (auto-skipped under prefers-reduced-motion via CSS) */
   (function () {
     var els = document.querySelectorAll(".reveal");
     if (!els.length || !("IntersectionObserver" in window)) return;
@@ -1015,6 +1537,7 @@
     }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
     els.forEach(function (el) { io.observe(el); });
   })();
+})();
 </script>
 
 <script type="application/ld+json">
@@ -1037,7 +1560,8 @@
     "jobTitle": "Principal Software & AI Engineer",
     "sameAs": ["https://www.linkedin.com/in/basilhawari93706658/"]
   },
-  "knowsAbout": ["Edge AI", "Computer Vision", "Embedded Systems", "NVIDIA Jetson", "STM32N6", "TensorRT", "WebRTC", "AWS", "Serverless Architecture", "Distributed Systems"]
+  "knowsAbout": ["Edge AI", "Computer Vision", "Embedded Systems", "NVIDIA Jetson", "STM32N6", "TensorRT", "WebRTC", "AWS", "Serverless Architecture", "Distributed Systems"],
+  "availableLanguage": ["en", "ar", "he"]
 }
 </script>
 
